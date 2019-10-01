@@ -1,0 +1,21 @@
+{
+  "name": "crawler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "crawler.js",
+  "dependencies": {
+    "crawler": "^1.2.1",
+    "csv-write-stream": "^2.0.0",
+    "fs-extra": "^8.1.0",
+    "minimist": "^1.2.0",
+    "sitemapper": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node ./crawler.js",
+    "dev": "node ./crawler.js --dev",
+    "clean": "node ./clean.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
