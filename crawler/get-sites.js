@@ -20,7 +20,7 @@ const getSites = () => {
     if (fs.existsSync(outPath)) {
         console.log('loading from ' + outPath + ' --- remove this file to fetch sites again');
 
-        return Promise.resolve(fs.readFileSync(outPath, 'utf8').split('\n'));
+        return Promise.resolve(fs.readFileSync(outPath, 'utf8').split('\n').filter(site => site && site.length));
     } else {
         console.log('fetching sites from live site-map...');
 
