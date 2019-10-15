@@ -13,11 +13,15 @@ const argv = require('minimist')(process.argv);
 const outDir = path.resolve(__dirname, 'out-html');
 fs.ensureDirSync(outDir);
 
-function getHtmlOutPath(url) {
-    const cleanUrl = new Buffer(url).toString('base64');
-    const hashedUrl = crypto.createHash('md5').update(cleanUrl).digest('hex');
+const allowedCategories = ['Music', 'Books', 'Teen Books', 'Textbooks', "Kids' Books", 'category', 'Newsstand', 'NOOK Books', 'Gift, Home & Office', 'Toys', 'Movies & TV', 'NOOK'];
 
-    return path.resolve(outDir, hashedUrl + '.html');
+function getId(url) {
+    const cleanUrl = new Buffer(url).toString('base64');
+    return crypto.createHash('md5').update(cleanUrl).digest('hex');
+}
+
+function getHtmlOutPath(url) {
+    return path.resolve(outDir, getId(url) + '.html');
 }
 
 const csvWriter = CsvWriteStream();
@@ -71,6 +75,7 @@ const itemCallback = (e, response, done) => {
         try {
             const url = request.uri.href;
 
+            const id = getId(url);
             const author = $('[itemprop=author]').text().trim();
             const itemName = $('[itemprop=name]').text().trim();
             const format = $('[itemprop=bookFormat]').text().trim();
@@ -86,12 +91,21 @@ const itemCallback = (e, response, done) => {
             const image = $('#pdpMainImage').attr('src');
 
             const category = (() => {
-                const breadcrumbs = $('.breadCrumbNav:not(.invisible)').text().trim().split('\n');
+                const breadcrumbs = $('.breadCrumbNav').text().trim().split('\n');
 
-                return breadcrumbs.length >= 2 ? breadcrumbs[1] : '';
+                if (breadcrumbs.length >= 2) {
+                    const category = breadcrumbs[1];
+
+                    if (allowedCategories.indexOf(category) !== -1) {
+                        return category;
+                    }
+                }
+
+                return undefined;
             })();
 
             const itemObject = {
+                id,
                 url,
                 itemName,
                 currentPrice,
