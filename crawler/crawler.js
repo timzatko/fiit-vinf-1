@@ -13,11 +13,9 @@ const outDir = path.resolve(__dirname, 'out-html');
 fs.ensureDirSync(outDir);
 
 function getHtmlOutPath(url) {
-    const cleanUrl = url
-        .replace(/http(s)?:\/?\/?/, '')
-        .replace(/\//g, ':');
+    const cleanUrl = new Buffer(url);
 
-    return path.resolve(outDir, cleanUrl.toString().slice(0, 180) + '.html');
+    return path.resolve(outDir, cleanUrl.toString('base64').slice(0, 180) + '.html');
 }
 
 const csvWriter = CsvWriteStream();
@@ -83,9 +81,10 @@ const itemCallback = (e, response, done) => {
                 return averageRating.length ? averageRating : $('.gig-average-review').text().trim();
             })();
             const editorialReviews = $('#EditorialReviews p').text().trim();
+            const image = $('#pdpMainImage').attr('src');
 
             const category = (() => {
-                const breadcrumbs = $('.breadCrumbNav').text().trim().split('\n');
+                const breadcrumbs = $('.breadCrumbNav:not(.invisible)').text().trim().split('\n');
 
                 return breadcrumbs.length >= 2 ? breadcrumbs[1] : '';
             })();
@@ -100,7 +99,8 @@ const itemCallback = (e, response, done) => {
                 author,
                 editorialReviews,
                 format,
-                category
+                category,
+                image,
             };
 
             function getProductDetails(detail) {
