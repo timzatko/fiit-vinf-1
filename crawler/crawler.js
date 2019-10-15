@@ -1,6 +1,7 @@
 // imports
 const path = require('path');
 const fs = require('fs-extra');
+const crypto = require('crypto');
 
 const Crawler = require('crawler');
 const CsvWriteStream = require('csv-write-stream');
@@ -13,9 +14,10 @@ const outDir = path.resolve(__dirname, 'out-html');
 fs.ensureDirSync(outDir);
 
 function getHtmlOutPath(url) {
-    const cleanUrl = new Buffer(url);
+    const cleanUrl = new Buffer(url).toString('base64');
+    const hashedUrl = crypto.createHash('md5').update(cleanUrl).digest('hex');
 
-    return path.resolve(outDir, cleanUrl.toString('base64').slice(0, 180) + '.html');
+    return path.resolve(outDir, hashedUrl + '.html');
 }
 
 const csvWriter = CsvWriteStream();
@@ -35,6 +37,7 @@ const productAttributes = [
     'Edition description',
     'Format',
     'File size',
+
     'UPC',
     'Original Release',
 ].map(attribute => {
