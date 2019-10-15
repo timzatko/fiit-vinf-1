@@ -37,7 +37,6 @@ const productAttributes = [
     'Edition description',
     'Format',
     'File size',
-
     'UPC',
     'Original Release',
 ].map(attribute => {
