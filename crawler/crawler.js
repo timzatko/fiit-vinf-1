@@ -134,8 +134,6 @@ const itemCallback = (e, response, done) => {
             if (!itemName.length) {
                 console.warn(`${url} is missing some important attributes!`);
                 console.log(itemObject);
-
-                fs.createWriteStream(getHtmlOutPath(url)).write(response.body);
             } else {
                 if (!argv.dev) {
                     csvWriter.write(itemObject);
@@ -143,6 +141,10 @@ const itemCallback = (e, response, done) => {
 
                 increment(url);
             }
+
+            // just write an empty file
+            const body = '' || response.body;
+            fs.createWriteStream(getHtmlOutPath(url)).write(body);
 
             done();
         } catch (e) {
