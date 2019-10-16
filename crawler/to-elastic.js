@@ -54,14 +54,14 @@ function toJSON(row) {
 
 async function send() {
     if (!argv.dev) {
-        console.log(`Sending ${row - BULK_SIZE} - ${row} in bulk!`);
+        console.log(`Sending ${row - buffer.length} - ${row} in bulk!`);
     }
 
     const body = [];
 
-    buffer.map(data => format(data)).forEach(data => {
-       body.push({ index: { _index: 'items', _type: data.category } });
-       body.push(data);
+    buffer.forEach(data => {
+       body.push({ index: { _index: 'items', _id: data.id } });
+       body.push(format(data));
     });
 
     buffer = [];
@@ -98,6 +98,8 @@ function format(data) {
 
                 data['file_size'] = { size, units };
             }
+        } else if (['id'].includes(key)) {
+            delete data[key];
         }
     });
 
