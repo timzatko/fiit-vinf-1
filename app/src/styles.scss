@@ -1,0 +1,22 @@
+body {
+  background: #fafafa;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.container {
+  width: 1024px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mat-typography {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Merriweather', serif;
+  }
+
+  p {
+    font-family: 'Open Sans', sans-serif;
+  }
+}
+
