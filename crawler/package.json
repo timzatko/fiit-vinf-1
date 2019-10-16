@@ -17,7 +17,9 @@
   "scripts": {
     "start": "node ./crawler.js",
     "dev": "node ./crawler.js --dev",
-    "clean": "node ./clean.js"
+    "clean": "node ./clean.js",
+    "export": "node ./to-elastic.js",
+    "export:dev": "node ./to-elastic.js --dev"
   },
   "author": "",
   "license": "ISC"
