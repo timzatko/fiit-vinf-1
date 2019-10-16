@@ -1,6 +1,7 @@
 node_modules
 
 out.csv
+out-copy.csv
 out-html
 
 sites.txt
