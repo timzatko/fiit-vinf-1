@@ -59,10 +59,14 @@ async function send() {
 
     const body = [];
 
-    buffer.forEach(data => {
-       body.push({ index: { _index: 'items', _id: data.id } });
-       body.push(format(data));
-    });
+    buffer
+        .map(data => formatItem(data))
+        .filter(data => {
+            return typeof data.price !== 'undefined' && typeof data.name !== 'undefined';
+        }).forEach(data => {
+           body.push({ index: { _index: 'items', _id: data.id } });
+           body.push(removeId(data));
+        });
 
     buffer = [];
 
@@ -79,24 +83,36 @@ async function send() {
     }
 }
 
-function format(data) {
-    function rename(fromKey, toKey) {
+// format item
+function formatItem(data) {
+    function formatPrice(value) {
+        if (!value.match(/^\$\d+(\.\d+)?$/)) {
+            return undefined;
+        }
+        return Number(value.replace(/[$ ]/g, ''));
+    }
+
+    function toNumber(value) {
+        return Number(value.replace(/,/g, ''))
+    }
+
+    function renameProperty(fromKey, toKey) {
         data[toKey] = data[fromKey];
         delete data[fromKey];
     }
 
-    rename('currentPrice', 'price');
-    rename('itemName', 'name');
-    rename('oldPrice', 'old_price');
-    rename('averageRating', 'average_rating');
-    rename('editorialReviews', 'editorial_reviews');
+    renameProperty('currentPrice', 'price');
+    renameProperty('itemName', 'name');
+    renameProperty('oldPrice', 'old_price');
+    renameProperty('averageRating', 'average_rating');
+    renameProperty('editorialReviews', 'editorial_reviews');
 
     Object.keys(data).forEach(key => {
         const value = data[key];
 
         if (!value || !value.length) {
             delete data[key];
-        } else if (['current_price', 'old_price'].includes(key)) {
+        } else if (['price', 'old_price'].includes(key)) {
             data[key] = formatPrice(value);
         } else if (['isbn-13', 'sales_rank', 'pages', 'average_rating'].includes(key)) {
             data[key] = toNumber(value)
@@ -109,18 +125,13 @@ function format(data) {
 
                 data['file_size'] = { size, units };
             }
-        } else if (['id'].includes(key)) {
-            delete data[key];
         }
     });
 
     return data;
 }
 
-function formatPrice(value) {
-    return Number(value.replace(/[$ ]/g, ''));
-}
-
-function toNumber(value) {
-    return Number(value.replace(/,/g, ''))
+function removeId(data) {
+    delete data['id'];
+    return data;
 }
