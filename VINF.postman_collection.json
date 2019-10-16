@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "cb27ea4c-5875-4b3b-a870-e2888be397b3",
+		"name": "VINF",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Items Mapping",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:9200/items/_mapping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"items",
+						"_mapping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE All Items",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\" : \"kimchy\",\n    \"post_date\" : \"2009-11-15T14:12:12\",\n    \"message\" : \"trying out Elasticsearch\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9200/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Item Mapping",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"properties\": {\n        \"age_range\": {\n            \"type\": \"text\",\n            \"fields\": {\n                \"keyword\": {\n                    \"type\": \"keyword\",\n                    \"ignore_above\": 256\n                }\n            }\n        },\n        \"author\": {\n            \"type\": \"completion\"\n        },\n        \"average_rating\": {\n            \"type\": \"float\"\n        },\n        \"category\": {\n            \"type\": \"text\",\n            \"fields\": {\n                \"keyword\": {\n                    \"type\": \"keyword\",\n                    \"ignore_above\": 256\n                }\n            }\n        },\n        \"price\": {\n            \"type\": \"float\"\n        },\n        \"description\": {\n            \"type\": \"text\",\n            \"analyzer\": \"english\"\n        },\n        \"edition_description\": {\n            \"type\": \"text\"\n        },\n        \"editorial_reviews\": {\n            \"type\": \"text\",\n           \"analyzer\": \"english\"\n        },\n        \"file_size\": {\n            \"properties\": {\n                \"size\": {\n                    \"type\": \"long\"\n                },\n                \"units\": {\n                    \"type\": \"text\",\n                    \"fields\": {\n                        \"keyword\": {\n                            \"type\": \"keyword\",\n                            \"ignore_above\": 256\n                        }\n                    }\n                }\n            }\n        },\n        \"format\": {\n            \"type\": \"text\",\n            \"fields\": {\n                \"keyword\": {\n                    \"type\": \"keyword\",\n                    \"ignore_above\": 256\n                }\n            }\n        },\n        \"image\": {\n            \"type\": \"text\"\n        },\n        \"isbn-13\": {\n            \"type\": \"long\"\n        },\n        \"name\": {\n            \"type\": \"completion\"\n        },\n        \"old_price\": {\n            \"type\": \"float\"\n        },\n        \"pages\": {\n            \"type\": \"long\"\n        },\n        \"product_dimensions\": {\n            \"type\": \"text\"\n        },\n        \"publication_date\": {\n            \"type\": \"date\",\n            \"format\": \"MM/dd/yyyy\"\n        },\n        \"publisher\": {\n            \"type\": \"text\"\n        },\n        \"release_date\": {\n            \"type\": \"date\",\n            \"format\": \"MM/dd/yyyy\"\n        },\n        \"sales_rank\": {\n            \"type\": \"long\"\n        },\n        \"series\": {\n            \"type\": \"text\"\n        },\n        \"upc\": {\n            \"type\": \"text\"\n        },\n        \"url\": {\n            \"type\": \"text\"\n        }\n    }\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9200/items/_mapping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"items",
+						"_mapping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Item Index",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9200/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
