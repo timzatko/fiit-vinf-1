@@ -80,14 +80,25 @@ async function send() {
 }
 
 function format(data) {
+    function rename(fromKey, toKey) {
+        data[toKey] = data[fromKey];
+        delete data[fromKey];
+    }
+
+    rename('currentPrice', 'price');
+    rename('itemName', 'name');
+    rename('oldPrice', 'old_price');
+    rename('averageRating', 'average_rating');
+    rename('editorialReviews', 'editorial_reviews');
+
     Object.keys(data).forEach(key => {
         const value = data[key];
 
         if (!value || !value.length) {
             delete data[key];
-        } else if (['currentPrice', 'oldPrice'].includes(key)) {
+        } else if (['current_price', 'old_price'].includes(key)) {
             data[key] = formatPrice(value);
-        } else if (['isbn-13', 'sales_rank', 'pages', 'averageRating'].includes(key)) {
+        } else if (['isbn-13', 'sales_rank', 'pages', 'average_rating'].includes(key)) {
             data[key] = toNumber(value)
         } else if (key === 'file_size') {
             const match = value.match(/(\d+([.,]\d+)?)\s+([a-zA-Z]+)/);
