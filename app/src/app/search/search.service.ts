@@ -27,7 +27,7 @@ export class SearchService {
   getAutocompleteSuggestions(text: string): Observable<Document<Item>[]> {
     let query = undefined;
 
-    const isbn13 = Number(query);
+    const isbn13 = Number(text);
     if (Number.isInteger(isbn13)) {
       query = {
         query: {
@@ -109,7 +109,7 @@ export class SearchService {
       queries.push({
         constant_score: {
           filter: {
-            match: { "isbn-13": isbn13 }
+            term: { "isbn-13": isbn13 }
           },
           boost: 100
         }
