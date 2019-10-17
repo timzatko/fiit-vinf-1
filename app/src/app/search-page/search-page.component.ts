@@ -4,6 +4,7 @@ import { Item } from "../item/item";
 import { SearchService } from "../search/search.service";
 import { Document } from "../elastic-search/elastic-search.types";
 import { FormControl } from "@angular/forms";
+import { PageEvent } from "@angular/material/paginator";
 
 const allCategories = Symbol("All Categories");
 
@@ -15,8 +16,9 @@ const allCategories = Symbol("All Categories");
 export class SearchPageComponent implements OnInit {
   searchQuery: string;
 
-  results: number;
-  limits: { from: number; size: number } = { from: 0, size: 20 };
+  resultCount: number;
+  currentPage = 0;
+  pageSize = 20;
 
   items: Document<Item>[];
 
@@ -35,11 +37,10 @@ export class SearchPageComponent implements OnInit {
     { value: "NOOK", name: "NOOK" }
   ];
 
-  categoryControl = new FormControl(allCategories);
+  publicationYears: number[] = [];
 
-  get page() {
-    return (this.limits.from % this.limits.size) + 1;
-  }
+  categoryControl = new FormControl(allCategories);
+  publicationYearControl = new FormControl();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -47,17 +48,38 @@ export class SearchPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.search();
+
+    this.publicationYears = new Array(200).fill(0).map((_, index) => {
+      return this._thisYear() - index;
+    });
+  }
+
+  search() {
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.searchQuery = queryParams["q"];
       this.items = null;
 
       this.searchService
-        .getBySearchQuery(this.searchQuery, this.limits)
+        .getBySearchQuery(this.searchQuery, {
+          from: this.pageSize * this.currentPage,
+          size: this.pageSize
+        })
         .subscribe(hits => {
-          this.results = hits.total.value;
+          this.resultCount = hits.total.value;
 
           this.items = hits.hits;
         });
     });
+  }
+
+  onPageChange(page: PageEvent) {
+    this.currentPage = page.pageIndex;
+
+    this.search();
+  }
+
+  private _thisYear() {
+    return new Date().getFullYear();
   }
 }

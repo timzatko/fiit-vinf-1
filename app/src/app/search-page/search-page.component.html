@@ -3,7 +3,7 @@
 </h1>
 
 <div>
-  <mat-form-field>
+  <mat-form-field appearance="outline">
     <mat-label>Category</mat-label>
     <mat-select [formControl]="categoryControl">
       <mat-option *ngFor="let category of categories" [value]="category.value">
@@ -11,16 +11,35 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  &nbsp;
+  <mat-form-field appearance="outline">
+    <mat-label>Publication/Release year</mat-label>
+    <mat-select [formControl]="publicationYearControl">
+      <mat-option *ngFor="let year of publicationYears" [value]="year">
+        {{ year }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 
-<p>Showing page {{ page }} of {{ results }} results.</p>
-
 <ng-container *ngIf="items; else noItems">
+  <p>Showing page {{ currentPage + 1 }} of {{ resultCount }} results.</p>
+
   <app-grid>
     <ng-container *ngFor="let item of items">
       <app-item [item]="item"></app-item>
     </ng-container>
   </app-grid>
+
+  <mat-paginator
+    [length]="resultCount"
+    [pageSize]="pageSize"
+    [pageIndex]="currentPage"
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator>
 </ng-container>
 
-<ng-template #noItems>loading...</ng-template>
+<ng-template #noItems>
+  <p>Loading...</p>
+</ng-template>

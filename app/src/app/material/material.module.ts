@@ -6,6 +6,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatSelectModule } from "@angular/material/select";
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { MatSelectModule } from "@angular/material/select";
     MatCardModule,
     MatButtonModule,
     MatAutocompleteModule,
-    MatSelectModule
+    MatSelectModule,
+    MatPaginatorModule
   ],
   exports: [
     MatInputModule,
@@ -23,7 +25,8 @@ import { MatSelectModule } from "@angular/material/select";
     MatCardModule,
     MatButtonModule,
     MatAutocompleteModule,
-    MatSelectModule
+    MatSelectModule,
+    MatPaginatorModule
   ]
 })
 export class MaterialModule {}
