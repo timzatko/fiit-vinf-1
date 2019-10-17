@@ -14,7 +14,7 @@ export class ItemPageComponent implements OnInit {
   private item: Item;
 
   information: { name: string; key: string }[] = [
-    { name: "ISBN", key: "isbn-13 " },
+    { name: "ISBN", key: "isbn-13" },
     { name: "Publisher", key: "publisher" }
   ];
 
