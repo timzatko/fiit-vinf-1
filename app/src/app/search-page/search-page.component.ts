@@ -7,6 +7,7 @@ import { FormControl } from "@angular/forms";
 import { PageEvent } from "@angular/material/paginator";
 
 export const ALL_CATEGORIES = Symbol("All Categories");
+export const ALL_PUBLICATION_YEARS = Symbol("All publication years");
 
 @Component({
   selector: "app-search-page",
@@ -40,12 +41,16 @@ export class SearchPageComponent implements OnInit {
   publicationYears: number[] = [];
 
   categoryControl = new FormControl(ALL_CATEGORIES);
-  publicationYearControl = new FormControl();
+  publicationYearControl = new FormControl(ALL_PUBLICATION_YEARS);
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private searchService: SearchService
   ) {}
+
+  get ALL_PUBLICATION_YEARS() {
+    return ALL_PUBLICATION_YEARS;
+  }
 
   ngOnInit() {
     this.search();

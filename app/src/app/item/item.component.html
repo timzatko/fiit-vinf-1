@@ -20,7 +20,7 @@
     [src]="_item.image"
   />
   <mat-card-content>
-    <div class="price">
+    <span class="price">
       <span>Price: </span>
       <ng-container *ngIf="_item.old_price; else samePrice">
         <b>${{ _item.price }}</b
@@ -30,6 +30,9 @@
       <ng-template #samePrice>
         <span>${{ _item.price }}</span>
       </ng-template>
-    </div>
+    </span>
+    <span *ngIf="_item.average_rating"
+      >&nbsp;| Rating: {{ _item.average_rating }}</span
+    >
   </mat-card-content>
 </mat-card>

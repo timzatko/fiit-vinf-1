@@ -12,6 +12,7 @@
       </ng-container>
       <i>{{ item.category }}</i>
     </p>
+    <p *ngIf="item.average_rating">Average Rating: {{ item.average_rating }}</p>
     <p>{{ item.description }}</p>
     <div class="price">
       <span>Price: </span>

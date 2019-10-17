@@ -10,7 +10,10 @@ import {
   SearchSuggestResponse
 } from "../elastic-search/elastic-search.types";
 import { Item } from "../item/item";
-import { ALL_CATEGORIES } from "../search-page/search-page.component";
+import {
+  ALL_CATEGORIES,
+  ALL_PUBLICATION_YEARS
+} from "../search-page/search-page.component";
 
 @Injectable({
   providedIn: "root"
@@ -67,7 +70,7 @@ export class SearchService {
   getBySearchQuery(
     query: string,
     filters: {
-      publicationDate: number;
+      publicationDate: number | typeof ALL_PUBLICATION_YEARS;
       category: string | typeof ALL_CATEGORIES;
     },
     limits: { from: number; size: number } = { from: 0, size: 20 }
@@ -121,7 +124,7 @@ export class SearchService {
       });
     }
 
-    if (filters.publicationDate) {
+    if (filters.publicationDate !== ALL_PUBLICATION_YEARS) {
       filter.push({
         bool: {
           should: [
@@ -129,7 +132,7 @@ export class SearchService {
               range: {
                 publication_date: {
                   gte: filters.publicationDate,
-                  lte: filters.publicationDate,
+                  lt: filters.publicationDate + 1,
                   format: "yyyy"
                 }
               }
@@ -138,7 +141,7 @@ export class SearchService {
               range: {
                 release_date: {
                   gte: filters.publicationDate,
-                  lte: filters.publicationDate,
+                  lt: filters.publicationDate + 1,
                   format: "yyyy"
                 }
               }
