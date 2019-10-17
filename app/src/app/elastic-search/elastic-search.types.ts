@@ -1,4 +1,4 @@
-export class Document<T> {
+export class Document<Doc> {
   _index: string;
   _type: string;
   _id: string;
@@ -6,10 +6,10 @@ export class Document<T> {
   _seq_no: number;
   _primary_term: number;
   found: boolean;
-  _source: T;
+  _source: Doc;
 }
 
-export type SearchResponse<T> = {
+export type SearchResponse<Doc> = {
   took: number;
   timed_out: boolean;
   _shards: {
@@ -18,16 +18,25 @@ export type SearchResponse<T> = {
     skipped: number;
     failed: number;
   };
-  hits: Hits<T>;
+  hits: Hits<Doc>;
 };
 
-export interface Hits<T> {
+export interface Hits<Doc> {
   total: {
     value: number;
     relation: string;
   };
   max_score: number;
-  hits: T[];
+  hits: Doc[];
 }
 
-export type SearchSuggestResponse = any;
+export type SearchSuggestResponse<Doc, Q> = SearchResponse<Doc> & {
+  suggest: { [P in keyof Q]: Suggestion<Doc> };
+};
+
+interface Suggestion<Doc> {
+  text: string;
+  offset: number;
+  length: number;
+  options: Doc[];
+}
