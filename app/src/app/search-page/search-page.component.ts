@@ -3,6 +3,9 @@ import { ActivatedRoute } from "@angular/router";
 import { Item } from "../item/item";
 import { SearchService } from "../search/search.service";
 import { Document } from "../elastic-search/elastic-search.types";
+import { FormControl } from "@angular/forms";
+
+const allCategories = Symbol("All Categories");
 
 @Component({
   selector: "app-search-page",
@@ -16,6 +19,23 @@ export class SearchPageComponent implements OnInit {
   limits: { from: number; size: number } = { from: 0, size: 20 };
 
   items: Document<Item>[];
+
+  categories: { value: string | Symbol; name: string }[] = [
+    { value: allCategories, name: "All Categories" },
+    { value: "Music", name: "Music" },
+    { value: "Books", name: "Books" },
+    { value: "Teen Books", name: "Teen Books" },
+    { value: "Textbooks", name: "Textbooks" },
+    { value: "Kids' Books", name: "Kids' Books" },
+    { value: "Newsstand", name: "Newsstand" },
+    { value: "NOOK Books", name: "NOOK Books" },
+    { value: "Gift, Home & Office", name: "Gift, Home & Office" },
+    { value: "Toys", name: "Toys" },
+    { value: "Movies & TV", name: "Movies & TV" },
+    { value: "NOOK", name: "NOOK" }
+  ];
+
+  categoryControl = new FormControl(allCategories);
 
   get page() {
     return (this.limits.from % this.limits.size) + 1;

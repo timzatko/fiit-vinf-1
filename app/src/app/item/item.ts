@@ -6,4 +6,5 @@ export class Item {
   category: string;
   old_price: number;
   editorial_reviews: string;
+  author: string;
 }

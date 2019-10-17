@@ -6,6 +6,10 @@
   <div class="right">
     <h2>{{ item.name }}</h2>
     <p>
+      <ng-container *ngIf="item.author">
+        by&nbsp;<b>{{ item.author }}</b
+        >&nbsp;|&nbsp;
+      </ng-container>
       <i>{{ item.category }}</i>
     </p>
     <p>{{ item.description }}</p>
@@ -28,10 +32,12 @@
       <p>{{ item.editorial_reviews }}</p>
     </div>
     <table>
-      <tr *ngFor="let info of information">
-        <td *ngIf="propertyExists(info.key)">{{ info.name }}:</td>
-        <td>{{ item[info.key] }}</td>
-      </tr>
+      <ng-container *ngFor="let info of information">
+        <tr *ngIf="propertyExists(info.key)">
+          <td>{{ info.name }}:</td>
+          <td>{{ item[info.key] }}</td>
+        </tr>
+      </ng-container>
     </table>
   </div>
 </div>
