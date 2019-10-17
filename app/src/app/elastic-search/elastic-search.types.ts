@@ -5,8 +5,9 @@ export class Document<Doc> {
   _version: number;
   _seq_no: number;
   _primary_term: number;
-  found: boolean;
   _source: Doc;
+  _score: number;
+  found: boolean;
 }
 
 export type SearchResponse<Doc> = {

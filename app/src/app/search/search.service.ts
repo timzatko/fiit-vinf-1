@@ -24,7 +24,7 @@ export class SearchService {
     private httpClient: HttpClient
   ) {}
 
-  getAutocompleteSuggestions(text: string): Observable<Document<Item>[]> {
+  getAutocompleteSuggestions(text: string): Observable<AutoCompleteItem[]> {
     let query = undefined;
 
     const isbn13 = Number(text);
@@ -40,14 +40,23 @@ export class SearchService {
 
     return from(
       this.httpClient.post<
-        SearchSuggestResponse<Document<Item>, { "name-suggestion" }>
+        SearchSuggestResponse<Document<Item>, { name; author }>
       >(this.elasticSearchService.url("items/_search"), {
         ...query,
         suggest: {
-          "name-suggestion": {
+          name: {
             text,
             completion: {
               field: "name.completion",
+              fuzzy: {
+                fuzziness: 1
+              }
+            }
+          },
+          author: {
+            text,
+            completion: {
+              field: "author.completion",
               fuzzy: {
                 fuzziness: 1
               }
@@ -57,12 +66,41 @@ export class SearchService {
       })
     ).pipe(
       map(response => {
-        if (response.hits.total.value > 0) {
-          return response.hits.hits;
+        let output: AutoCompleteItem[] = [];
+
+        const isbnHits = response.hits.hits;
+        const nameSuggestions = response.suggest.name;
+        const authorSuggestions = response.suggest.author;
+
+        if (isbnHits.length) {
+          output = output.concat(
+            isbnHits.map(document => ({ type: "isbn", document }))
+          );
         }
 
-        const suggestion = response.suggest["name-suggestion"];
-        return !suggestion.length ? [] : suggestion[0].options;
+        if (nameSuggestions) {
+          output = output.concat(
+            nameSuggestions[0].options.map(document => ({
+              type: "name-suggestion",
+              document
+            }))
+          );
+        }
+
+        if (authorSuggestions) {
+          output = output.concat(
+            authorSuggestions[0].options.map(document => ({
+              type: "author-suggestion",
+              document
+            }))
+          );
+        }
+
+        output.sort((a, b) => {
+          return b.document._score - a.document._score;
+        });
+
+        return output;
       })
     );
   }
@@ -177,4 +215,9 @@ export class SearchService {
       )
     ).pipe(map(resp => resp.hits));
   }
+}
+
+export interface AutoCompleteItem {
+  type: "author-suggestion" | "name-suggestion" | "isbn";
+  document: Document<Item>;
 }

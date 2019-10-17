@@ -12,22 +12,33 @@
   <mat-autocomplete [displayWith]="displayWith" #auto="matAutocomplete">
     <mat-option
       *ngFor="let item of suggestions | async"
-      [value]="item._source.name"
+      [value]="item.document._source.name"
       (onSelectionChange)="onOptionSelect({ type: 'document', document: item })"
     >
-      <span>{{ item._source.name }}</span> |
-      <i>{{ item._source.category }}</i> |
-      <ng-container *ngIf="item._source.old_price; else samePrice">
+      <ng-container *ngIf="item.type === 'author-suggestion'">
+        <mat-icon>person</mat-icon>
+        <b>{{ item.document._source.author }}:&nbsp;</b>
+      </ng-container>
+      <ng-container *ngIf="item.type === 'name-suggestion'">
+        <mat-icon>book</mat-icon>
+      </ng-container>
+      <ng-container *ngIf="item.type === 'isbn'">
+        ISBN: <b>{{ item.document._source["isbn-13"] }}</b
+        >&nbsp;|&nbsp;
+      </ng-container>
+      <span>{{ item.document._source.name }}</span> |
+      <i>{{ item.document._source.category }}</i> |
+      <ng-container *ngIf="item.document._source.old_price; else samePrice">
         <small
-          ><b>${{ item._source.price }}</b></small
+          ><b>${{ item.document._source.price }}</b></small
         >&nbsp;
         <small
-          >(<s>${{ item._source.old_price }}</s
+          >(<s>${{ item.document._source.old_price }}</s
           >)</small
         >
       </ng-container>
       <ng-template #samePrice>
-        <small>${{ item._source.price }}</small>
+        <small>${{ item.document._source.price }}</small>
       </ng-template>
     </mat-option>
     <ng-container *ngIf="searchQuery && searchQuery.length > 3">

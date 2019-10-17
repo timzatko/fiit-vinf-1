@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { debounceTime, skip, switchMap, takeUntil } from "rxjs/operators";
-import { SearchService } from "./search.service";
+import { AutoCompleteItem, SearchService } from "./search.service";
 import { Item } from "../item/item";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
@@ -21,7 +21,7 @@ export class SearchComponent implements OnInit {
 
   searchQueryControl = new FormControl();
 
-  suggestions: Observable<Document<Item>[]>;
+  suggestions: Observable<AutoCompleteItem[]>;
 
   constructor(private searchService: SearchService, private router: Router) {}
 
