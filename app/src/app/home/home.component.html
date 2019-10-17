@@ -1,1 +1,6 @@
-<h2>Homepage</h2>
+<h1>Top published this year</h1>
+<app-grid>
+  <ng-container *ngFor="let item of items">
+    <app-item [item]="item"></app-item>
+  </ng-container>
+</app-grid>
