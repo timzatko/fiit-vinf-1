@@ -12,7 +12,8 @@ import {
 import { Item } from "../item/item";
 import {
   ALL_CATEGORIES,
-  ALL_PUBLICATION_YEARS
+  ALL_PUBLICATION_YEARS,
+  SORT_BY_RELEVANCE
 } from "../search-page/search-page.component";
 
 @Injectable({
@@ -111,6 +112,7 @@ export class SearchService {
       publicationDate: number | typeof ALL_PUBLICATION_YEARS;
       category: string | typeof ALL_CATEGORIES;
     },
+    sortBy: { [key: string]: "asc" | "desc" } | typeof SORT_BY_RELEVANCE,
     limits: { from: number; size: number } = { from: 0, size: 20 }
   ): Observable<Hits<Document<Item>>> {
     const filter: any[] = [];
@@ -162,7 +164,7 @@ export class SearchService {
       });
     }
 
-    if (filters.category !== ALL_CATEGORIES) {
+    if (typeof filters.category !== "symbol") {
       filter.push({
         term: {
           "category.keyword": filters.category
@@ -170,7 +172,7 @@ export class SearchService {
       });
     }
 
-    if (filters.publicationDate !== ALL_PUBLICATION_YEARS) {
+    if (typeof filters.publicationDate !== "symbol") {
       filter.push({
         bool: {
           should: [
@@ -198,12 +200,19 @@ export class SearchService {
       });
     }
 
+    let sort: { [key: string]: "asc" | "desc" }[] | undefined = undefined;
+
+    if (typeof sortBy !== "symbol") {
+      sort = [sortBy];
+    }
+
     return from(
       this.httpClient.post<SearchResponse<Document<Item>>>(
         this.elasticSearchService.url("items/_search"),
         {
           from: limits.from,
           size: limits.size,
+          sort: sort,
           query: {
             bool: {
               filter: filter,

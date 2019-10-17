@@ -7,7 +7,8 @@ import { FormControl } from "@angular/forms";
 import { PageEvent } from "@angular/material/paginator";
 
 export const ALL_CATEGORIES = Symbol("All Categories");
-export const ALL_PUBLICATION_YEARS = Symbol("All publication years");
+export const ALL_PUBLICATION_YEARS = Symbol("All Publication Years");
+export const SORT_BY_RELEVANCE = Symbol("Sort By Relevance");
 
 @Component({
   selector: "app-search-page",
@@ -38,10 +39,18 @@ export class SearchPageComponent implements OnInit {
     { value: "NOOK", name: "NOOK" }
   ];
 
+  sorts: { value: { [key: string]: "asc" | "desc" }; name: string }[] = [
+    { value: { average_rating: "asc" }, name: "Rating (ASC)" },
+    { value: { average_rating: "desc" }, name: "Rating (DESC)" },
+    { value: { price: "asc" }, name: "Price (ASC)" },
+    { value: { price: "desc" }, name: "Price (DESC)" }
+  ];
+
   publicationYears: number[] = [];
 
   categoryControl = new FormControl(ALL_CATEGORIES);
   publicationYearControl = new FormControl(ALL_PUBLICATION_YEARS);
+  sortControl = new FormControl(SORT_BY_RELEVANCE);
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -50,6 +59,10 @@ export class SearchPageComponent implements OnInit {
 
   get ALL_PUBLICATION_YEARS() {
     return ALL_PUBLICATION_YEARS;
+  }
+
+  get SORT_BY_RELEVANCE() {
+    return SORT_BY_RELEVANCE;
   }
 
   ngOnInit() {
@@ -72,6 +85,7 @@ export class SearchPageComponent implements OnInit {
             category: this.categoryControl.value,
             publicationDate: this.publicationYearControl.value
           },
+          this.sortControl.value,
           {
             from: this.pageSize * this.currentPage,
             size: this.pageSize
