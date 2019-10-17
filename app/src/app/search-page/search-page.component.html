@@ -2,6 +2,8 @@
   Search results for - <i>"{{ searchQuery }}"</i>
 </h1>
 
+<p>Showing page {{ page }} of {{ results }} results.</p>
+
 <ng-container *ngIf="items; else noItems">
   <app-grid>
     <ng-container *ngFor="let item of items">

@@ -18,14 +18,16 @@ export type SearchResponse<T> = {
     skipped: number;
     failed: number;
   };
-  hits: {
-    total: {
-      value: number;
-      relation: string;
-    };
-    max_score: number;
-    hits: T[];
-  };
+  hits: Hits<T>;
 };
+
+export interface Hits<T> {
+  total: {
+    value: number;
+    relation: string;
+  };
+  max_score: number;
+  hits: T[];
+}
 
 export type SearchSuggestResponse = any;

@@ -67,7 +67,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"properties\": {\n        \"age_range\": {\n            \"type\": \"text\",\n            \"fields\": {\n                \"keyword\": {\n                    \"type\": \"keyword\",\n                    \"ignore_above\": 256\n                }\n            }\n        },\n        \"author\": {\n            \"type\": \"completion\"\n        },\n        \"average_rating\": {\n            \"type\": \"float\"\n        },\n        \"category\": {\n            \"type\": \"text\",\n            \"fields\": {\n                \"keyword\": {\n                    \"type\": \"keyword\",\n                    \"ignore_above\": 256\n                }\n            }\n        },\n        \"price\": {\n            \"type\": \"float\"\n        },\n        \"description\": {\n            \"type\": \"text\",\n            \"analyzer\": \"english\"\n        },\n        \"edition_description\": {\n            \"type\": \"text\"\n        },\n        \"editorial_reviews\": {\n            \"type\": \"text\",\n           \"analyzer\": \"english\"\n        },\n        \"file_size\": {\n            \"properties\": {\n                \"size\": {\n                    \"type\": \"long\"\n                },\n                \"units\": {\n                    \"type\": \"text\",\n                    \"fields\": {\n                        \"keyword\": {\n                            \"type\": \"keyword\",\n                            \"ignore_above\": 256\n                        }\n                    }\n                }\n            }\n        },\n        \"format\": {\n            \"type\": \"text\",\n            \"fields\": {\n                \"keyword\": {\n                    \"type\": \"keyword\",\n                    \"ignore_above\": 256\n                }\n            }\n        },\n        \"image\": {\n            \"type\": \"text\"\n        },\n        \"isbn-13\": {\n            \"type\": \"long\"\n        },\n        \"name\": {\n            \"type\": \"completion\"\n        },\n        \"old_price\": {\n            \"type\": \"float\"\n        },\n        \"pages\": {\n            \"type\": \"long\"\n        },\n        \"product_dimensions\": {\n            \"type\": \"text\"\n        },\n        \"publication_date\": {\n            \"type\": \"date\",\n            \"format\": \"MM/dd/yyyy\"\n        },\n        \"publisher\": {\n            \"type\": \"text\"\n        },\n        \"release_date\": {\n            \"type\": \"date\",\n            \"format\": \"MM/dd/yyyy\"\n        },\n        \"sales_rank\": {\n            \"type\": \"long\"\n        },\n        \"series\": {\n            \"type\": \"text\"\n        },\n        \"upc\": {\n            \"type\": \"text\"\n        },\n        \"url\": {\n            \"type\": \"text\"\n        }\n    }\n\n}",
+          "raw": "{\n    \"properties\": {\n        \"age_range\": {\n            \"type\": \"text\",\n            \"fields\": {\n                \"keyword\": {\n                    \"type\": \"keyword\",\n                    \"ignore_above\": 256\n                }\n            }\n        },\n        \"author\": {\n            \"type\": \"completion\"\n        },\n        \"average_rating\": {\n            \"type\": \"float\"\n        },\n        \"category\": {\n            \"type\": \"text\",\n            \"fields\": {\n                \"keyword\": {\n                    \"type\": \"keyword\",\n                    \"ignore_above\": 256\n                }\n            }\n        },\n        \"price\": {\n            \"type\": \"float\"\n        },\n        \"description\": {\n            \"type\": \"text\",\n            \"analyzer\": \"english\"\n        },\n        \"edition_description\": {\n            \"type\": \"text\"\n        },\n        \"editorial_reviews\": {\n            \"type\": \"text\",\n           \"analyzer\": \"english\"\n        },\n        \"file_size\": {\n            \"properties\": {\n                \"size\": {\n                    \"type\": \"long\"\n                },\n                \"units\": {\n                    \"type\": \"text\",\n                    \"fields\": {\n                        \"keyword\": {\n                            \"type\": \"keyword\",\n                            \"ignore_above\": 256\n                        }\n                    }\n                }\n            }\n        },\n        \"format\": {\n            \"type\": \"text\",\n            \"fields\": {\n                \"keyword\": {\n                    \"type\": \"keyword\",\n                    \"ignore_above\": 256\n                }\n            }\n        },\n        \"image\": {\n            \"type\": \"text\"\n        },\n        \"isbn-13\": {\n            \"type\": \"long\"\n        },\n        \"name\": {\n            \"type\": \"text\",\n            \"analyzer\": \"standard\"\n        },\n        \"old_price\": {\n            \"type\": \"float\"\n        },\n        \"pages\": {\n            \"type\": \"long\"\n        },\n        \"product_dimensions\": {\n            \"type\": \"text\"\n        },\n        \"publication_date\": {\n            \"type\": \"date\",\n            \"format\": \"MM/dd/yyyy\"\n        },\n        \"publisher\": {\n            \"type\": \"text\"\n        },\n        \"release_date\": {\n            \"type\": \"date\",\n            \"format\": \"MM/dd/yyyy\"\n        },\n        \"sales_rank\": {\n            \"type\": \"long\"\n        },\n        \"series\": {\n            \"type\": \"text\"\n        },\n        \"upc\": {\n            \"type\": \"text\"\n        },\n        \"url\": {\n            \"type\": \"text\"\n        }\n    }\n\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -85,16 +85,109 @@
       "response": []
     },
     {
-      "name": "Create Item Index",
+      "name": "PUT Create Item Index",
       "request": {
         "method": "PUT",
-        "header": [],
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"mappings\": {\n\t\t\"properties\": {\n\t\t    \"age_range\": {\n\t\t        \"type\": \"text\",\n\t\t        \"fields\": {\n\t\t            \"keyword\": {\n\t\t                \"type\": \"keyword\",\n\t\t                \"ignore_above\": 256\n\t\t            }\n\t\t        }\n\t\t    },\n\t\t    \"author\": {\n\t\t        \"type\": \"completion\"\n\t\t    },\n\t\t    \"average_rating\": {\n\t\t        \"type\": \"float\"\n\t\t    },\n\t\t    \"category\": {\n\t\t        \"type\": \"text\",\n\t\t        \"fields\": {\n\t\t            \"keyword\": {\n\t\t                \"type\": \"keyword\",\n\t\t                \"ignore_above\": 256\n\t\t            }\n\t\t        }\n\t\t    },\n\t\t    \"price\": {\n\t\t        \"type\": \"float\"\n\t\t    },\n\t\t    \"description\": {\n\t\t        \"type\": \"text\",\n\t\t        \"analyzer\": \"english\"\n\t\t    },\n\t\t    \"edition_description\": {\n\t\t        \"type\": \"text\"\n\t\t    },\n\t\t    \"editorial_reviews\": {\n\t\t        \"type\": \"text\",\n\t\t       \"analyzer\": \"english\"\n\t\t    },\n\t\t    \"file_size\": {\n\t\t        \"properties\": {\n\t\t            \"size\": {\n\t\t                \"type\": \"long\"\n\t\t            },\n\t\t            \"units\": {\n\t\t                \"type\": \"text\",\n\t\t                \"fields\": {\n\t\t                    \"keyword\": {\n\t\t                        \"type\": \"keyword\",\n\t\t                        \"ignore_above\": 256\n\t\t                    }\n\t\t                }\n\t\t            }\n\t\t        }\n\t\t    },\n\t\t    \"format\": {\n\t\t        \"type\": \"text\",\n\t\t        \"fields\": {\n\t\t            \"keyword\": {\n\t\t                \"type\": \"keyword\",\n\t\t                \"ignore_above\": 256\n\t\t            }\n\t\t        }\n\t\t    },\n\t\t    \"image\": {\n\t\t        \"type\": \"text\"\n\t\t    },\n\t\t    \"isbn-13\": {\n\t\t        \"type\": \"long\"\n\t\t    },\n\t\t    \"name\": {\n\t\t        \"type\": \"text\",\n\t\t        \"fields\": {\n\t\t        \t\"completion\": {\n        \t\t\t\t\"type\": \"completion\"\n        \t\t\t}\n\t\t        },\n\t\t        \"analyzer\": \"standard\"\n\t\t    },\n\t\t    \"old_price\": {\n\t\t        \"type\": \"float\"\n\t\t    },\n\t\t    \"pages\": {\n\t\t        \"type\": \"long\"\n\t\t    },\n\t\t    \"product_dimensions\": {\n\t\t        \"type\": \"text\"\n\t\t    },\n\t\t    \"publication_date\": {\n\t\t        \"type\": \"date\",\n\t\t        \"format\": \"MM/dd/yyyy\"\n\t\t    },\n\t\t    \"publisher\": {\n\t\t        \"type\": \"text\"\n\t\t    },\n\t\t    \"release_date\": {\n\t\t        \"type\": \"date\",\n\t\t        \"format\": \"MM/dd/yyyy\"\n\t\t    },\n\t\t    \"sales_rank\": {\n\t\t        \"type\": \"long\"\n\t\t    },\n\t\t    \"series\": {\n\t\t        \"type\": \"text\"\n\t\t    },\n\t\t    \"upc\": {\n\t\t        \"type\": \"text\"\n\t\t    },\n\t\t    \"url\": {\n\t\t        \"type\": \"text\"\n\t\t    }\n\t\t}\n\t}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
         "url": {
           "raw": "http://localhost:9200/items",
           "protocol": "http",
           "host": ["localhost"],
           "port": "9200",
           "path": ["items"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search By Query",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"from\" : 0,\n\t\"size\" : 20,\n\t\"query\" : {\n\t\t\"bool\": {\n\t\t\t\"should\": [\n\t\t\t\t{\n\t\t\t\t\t\"constant_score\": {\n\t\t\t\t\t\t\"filter\": {\n\t\t\t\t\t\t\t\"match\": { \"name\": \"roman\" }\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"boost\": 10\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"constant_score\": {\n\t\t\t\t\t\t\"filter\": {\n\t\t\t\t\t\t\t\"match\": { \"description\": \"roman\" }\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"boost\": 3\n\t\t\t\t\t}\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"constant_score\": {\n\t\t\t\t\t\t\"filter\": {\n\t\t\t\t\t\t\t\"match\": { \"editorial_reviews\": \"roman\" }\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"boost\": 1\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:9200/items/_search",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9200",
+          "path": ["items", "_search"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search and Suggest",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"suggest\" : {\n\t\t\"suggestion\": {\n    \t\t\"prefix\": \"marry christm\",\n    \t\t\"completion\": {\n        \t\t\"field\": \"name.completion\",\n        \t\t\"fuzzy\": {\n        \t\t\t\"fuzziness\": 1\n        \t\t}\n    \t\t}\n    \t}\n\t}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:9200/items/_search",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9200",
+          "path": ["items", "_search"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Document",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:9200/items/_doc/c94631c460c9b48dd47faac739e873d2",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9200",
+          "path": ["items", "_doc", "c94631c460c9b48dd47faac739e873d2"]
         }
       },
       "response": []

@@ -53,26 +53,31 @@ export class SearchComponent implements OnInit {
   }
 
   async onKeyUpEnter() {
-    if (!this.autoComplete.activeOption) {
+    if (!this.autoComplete.activeOption && this.searchQuery) {
       this._navigateToSearch(this.searchQuery);
     }
   }
 
   async onOptionSelect(option: AutocompleteOption) {
     if (option.type === "document") {
-      await this.router.navigate(["item", option.document._id]);
+      await this.router.navigate(["item", option.document._id]).then(() => {
+        this.searchInput.nativeElement.blur();
+      });
     } else {
       this._navigateToSearch(option.query);
     }
   }
 
   private async _navigateToSearch(query: string) {
-    this.searchInput.nativeElement.blur();
     this.autoComplete.closePanel();
 
-    await this.router.navigate(["search"], {
-      queryParams: { q: query }
-    });
+    await this.router
+      .navigate(["search"], {
+        queryParams: { q: query }
+      })
+      .then(() => {
+        this.searchInput.nativeElement.blur();
+      });
   }
 }
 

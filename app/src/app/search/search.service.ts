@@ -5,6 +5,7 @@ import { map } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import {
   Document,
+  Hits,
   SearchResponse,
   SearchSuggestResponse
 } from "../elastic-search/elastic-search.types";
@@ -52,8 +53,8 @@ export class SearchService {
 
   getBySearchQuery(
     query: string,
-    limits: { from; size } = { from: 0, size: 20 }
-  ): Observable<Document<Item>[]> {
+    limits: { from: number; size: number } = { from: 0, size: 20 }
+  ): Observable<Hits<Document<Item>>> {
     return from(
       this.httpClient.post<SearchResponse<Document<Item>>>(
         this.elasticSearchService.url("items/_search"),
@@ -92,6 +93,6 @@ export class SearchService {
           }
         }
       )
-    ).pipe(map(resp => resp.hits.hits));
+    ).pipe(map(resp => resp.hits));
   }
 }

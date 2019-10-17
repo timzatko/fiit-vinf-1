@@ -12,7 +12,14 @@ import { Document } from "../elastic-search/elastic-search.types";
 export class SearchPageComponent implements OnInit {
   searchQuery: string;
 
+  results: number;
+  limits: { from: number; size: number } = { from: 0, size: 20 };
+
   items: Document<Item>[];
+
+  get page() {
+    return (this.limits.from % this.limits.size) + 1;
+  }
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -24,9 +31,13 @@ export class SearchPageComponent implements OnInit {
       this.searchQuery = queryParams["q"];
       this.items = null;
 
-      this.searchService.getBySearchQuery(this.searchQuery).subscribe(items => {
-        this.items = items;
-      });
+      this.searchService
+        .getBySearchQuery(this.searchQuery, this.limits)
+        .subscribe(hits => {
+          this.results = hits.total.value;
+
+          this.items = hits.hits;
+        });
     });
   }
 }
