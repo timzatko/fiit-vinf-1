@@ -40,11 +40,11 @@ export class SearchService {
 
     return from(
       this.httpClient.post<
-        SearchSuggestResponse<Document<Item>, { suggestion }>
+        SearchSuggestResponse<Document<Item>, { "name-suggestion" }>
       >(this.elasticSearchService.url("items/_search"), {
         ...query,
         suggest: {
-          suggestion: {
+          "name-suggestion": {
             text,
             completion: {
               field: "name.completion",
@@ -61,7 +61,7 @@ export class SearchService {
           return response.hits.hits;
         }
 
-        const suggestion = response.suggest.suggestion;
+        const suggestion = response.suggest["name-suggestion"];
         return !suggestion.length ? [] : suggestion[0].options;
       })
     );
@@ -84,6 +84,14 @@ export class SearchService {
             match: { name: query }
           },
           boost: 10
+        }
+      },
+      {
+        constant_score: {
+          filter: {
+            match: { author: query }
+          },
+          boost: 3
         }
       },
       {
