@@ -2,6 +2,12 @@
   <mat-card-header>
     <mat-card-title>
       <a [routerLink]="['/item', item._id]">{{ _item.name }}</a>
+      <ng-container *ngIf="_item.release_date || _item.publication_date">
+        <small
+          >&nbsp;|
+          {{ getYear(_item.release_date || _item.publication_date) }}</small
+        >
+      </ng-container>
       <ng-container *ngIf="_item.category">
         <small>&nbsp;| {{ _item.category }}</small>
       </ng-container>

@@ -7,4 +7,6 @@ export class Item {
   old_price: number;
   editorial_reviews: string;
   author: string;
+  release_date: number;
+  publication_date: number;
 }

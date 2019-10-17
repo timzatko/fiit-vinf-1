@@ -29,6 +29,10 @@ export class ItemComponent implements OnInit, OnChanges {
     }
   }
 
+  getYear(year: string) {
+    return new Date(year).getFullYear();
+  }
+
   async onImageClick() {
     await this.router.navigate(["/item", this.item._id]);
   }

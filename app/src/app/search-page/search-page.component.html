@@ -2,7 +2,7 @@
   Search results for - <i>"{{ searchQuery }}"</i>
 </h1>
 
-<div>
+<div class="filters">
   <mat-form-field appearance="outline">
     <mat-label>Category</mat-label>
     <mat-select [formControl]="categoryControl">
@@ -11,7 +11,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  &nbsp;
+
   <mat-form-field appearance="outline">
     <mat-label>Publication/Release year</mat-label>
     <mat-select [formControl]="publicationYearControl">
@@ -20,6 +20,10 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+
+  <div class="search-button">
+    <button mat-raised-button color="primary" (click)="search()">Search</button>
+  </div>
 </div>
 
 <ng-container *ngIf="items; else noItems">
@@ -30,6 +34,8 @@
       <app-item [item]="item"></app-item>
     </ng-container>
   </app-grid>
+
+  <p *ngIf="!resultCount">No results matching query and filters.</p>
 
   <mat-paginator
     [length]="resultCount"

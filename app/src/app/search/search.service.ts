@@ -10,6 +10,7 @@ import {
   SearchSuggestResponse
 } from "../elastic-search/elastic-search.types";
 import { Item } from "../item/item";
+import { ALL_CATEGORIES } from "../search-page/search-page.component";
 
 @Injectable({
   providedIn: "root"
@@ -65,9 +66,15 @@ export class SearchService {
 
   getBySearchQuery(
     query: string,
+    filters: {
+      publicationDate: number;
+      category: string | typeof ALL_CATEGORIES;
+    },
     limits: { from: number; size: number } = { from: 0, size: 20 }
   ): Observable<Hits<Document<Item>>> {
-    const queries: any = [
+    const filter: any[] = [];
+
+    const queries: any[] = [
       {
         constant_score: {
           filter: {
@@ -106,6 +113,42 @@ export class SearchService {
       });
     }
 
+    if (filters.category !== ALL_CATEGORIES) {
+      filter.push({
+        term: {
+          "category.keyword": filters.category
+        }
+      });
+    }
+
+    if (filters.publicationDate) {
+      filter.push({
+        bool: {
+          should: [
+            {
+              range: {
+                publication_date: {
+                  gte: filters.publicationDate,
+                  lte: filters.publicationDate,
+                  format: "yyyy"
+                }
+              }
+            },
+            {
+              range: {
+                release_date: {
+                  gte: filters.publicationDate,
+                  lte: filters.publicationDate,
+                  format: "yyyy"
+                }
+              }
+            }
+          ],
+          minimum_should_match: 1
+        }
+      });
+    }
+
     return from(
       this.httpClient.post<SearchResponse<Document<Item>>>(
         this.elasticSearchService.url("items/_search"),
@@ -114,7 +157,9 @@ export class SearchService {
           size: limits.size,
           query: {
             bool: {
-              should: queries
+              filter: filter,
+              should: queries,
+              minimum_should_match: 1
             }
           }
         }

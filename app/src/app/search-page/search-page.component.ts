@@ -6,7 +6,7 @@ import { Document } from "../elastic-search/elastic-search.types";
 import { FormControl } from "@angular/forms";
 import { PageEvent } from "@angular/material/paginator";
 
-const allCategories = Symbol("All Categories");
+export const ALL_CATEGORIES = Symbol("All Categories");
 
 @Component({
   selector: "app-search-page",
@@ -23,7 +23,7 @@ export class SearchPageComponent implements OnInit {
   items: Document<Item>[];
 
   categories: { value: string | Symbol; name: string }[] = [
-    { value: allCategories, name: "All Categories" },
+    { value: ALL_CATEGORIES, name: "All Categories" },
     { value: "Music", name: "Music" },
     { value: "Books", name: "Books" },
     { value: "Teen Books", name: "Teen Books" },
@@ -39,7 +39,7 @@ export class SearchPageComponent implements OnInit {
 
   publicationYears: number[] = [];
 
-  categoryControl = new FormControl(allCategories);
+  categoryControl = new FormControl(ALL_CATEGORIES);
   publicationYearControl = new FormControl();
 
   constructor(
@@ -61,10 +61,17 @@ export class SearchPageComponent implements OnInit {
       this.items = null;
 
       this.searchService
-        .getBySearchQuery(this.searchQuery, {
-          from: this.pageSize * this.currentPage,
-          size: this.pageSize
-        })
+        .getBySearchQuery(
+          this.searchQuery,
+          {
+            category: this.categoryControl.value,
+            publicationDate: this.publicationYearControl.value
+          },
+          {
+            from: this.pageSize * this.currentPage,
+            size: this.pageSize
+          }
+        )
         .subscribe(hits => {
           this.resultCount = hits.total.value;
 
