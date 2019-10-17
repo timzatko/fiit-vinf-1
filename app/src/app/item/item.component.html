@@ -1,12 +1,26 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>{{ item.name }}</mat-card-title>
+    <mat-card-title>
+      <a [routerLink]="['/item', item._id]">{{ _item.name }}</a>
+    </mat-card-title>
   </mat-card-header>
-  <img mat-card-image [alt]="item.description" [src]="item.imageUrl" />
+  <img
+    mat-card-image
+    (click)="onImageClick()"
+    [alt]="_item.description"
+    [src]="_item.image"
+  />
   <mat-card-content>
-    <p>{{ item.price }}</p>
+    <div class="price">
+      <span>Price: </span>
+      <ng-container *ngIf="_item.old_price; else samePrice">
+        <b>${{ _item.price }}</b
+        >&nbsp; (<s>${{ _item.old_price }}</s
+        >)
+      </ng-container>
+      <ng-template #samePrice>
+        <span>${{ _item.price }}</span>
+      </ng-template>
+    </div>
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>Buy</button>
-  </mat-card-actions>
 </mat-card>

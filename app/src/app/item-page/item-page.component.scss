@@ -1,0 +1,39 @@
+@import "../../colors";
+
+.item-page-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  .left {
+    padding-right: 4px;
+    text-align: center;
+
+    img {
+      padding: 8px;
+      border: 2px solid;
+    }
+  }
+
+  .right {
+    padding-left: 4px;
+
+    .price {
+      border-top: 1px solid $primary;
+      border-bottom: 1px solid $primary;
+      padding: 12px;
+      line-height: normal;
+      font-size: 40px;
+    }
+  }
+}
+
+table {
+  width: 100%;
+  font-size: 16px;
+  padding: 12px;
+  margin-top: 8px;
+
+  td:first-child {
+    max-width: 150px;
+  }
+}

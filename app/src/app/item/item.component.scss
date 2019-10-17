@@ -1,0 +1,18 @@
+:host {
+  display: inline-block;
+  width: 240px;
+  padding: 5px;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+img {
+  cursor: pointer;
+}

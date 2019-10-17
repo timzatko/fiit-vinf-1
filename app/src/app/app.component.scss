@@ -15,3 +15,16 @@
     text-align: right;
   }
 }
+
+h1 > a {
+  color: inherit;
+  text-decoration: inherit;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.content {
+  padding: 12px;
+}

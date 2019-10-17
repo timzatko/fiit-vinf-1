@@ -1,0 +1,28 @@
+`
+<div *ngIf="item" class="item-page-container">
+  <div class="left">
+    <img [src]="item.image" [alt]="item.name" />
+  </div>
+  <div class="right">
+    <h2>{{ item.name }}</h2>
+    <p>{{ item.description }}</p>
+    <div class="price">
+      <span>Price: </span>
+      <ng-container *ngIf="item.old_price; else samePrice">
+        <b>${{ item.price }}</b
+        >&nbsp; (<s>${{ item.old_price }}</s
+        >)
+      </ng-container>
+      <ng-template #samePrice>
+        <span>${{ item.price }}</span>
+      </ng-template>
+    </div>
+    <table>
+      <tr *ngFor="let info of information">
+        <td *ngIf="propertyExists(info.key)">{{ info.name }}:</td>
+        <td>{{ item[info.key] }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+`

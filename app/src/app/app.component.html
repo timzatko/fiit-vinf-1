@@ -1,25 +1,13 @@
 <div class="container">
   <div class="header">
     <div class="left-column">
-      <h1>Book Shop</h1>
+      <h1><a [routerLink]="['/']">Book Shop</a></h1>
     </div>
     <div class="right-column">
-      <mat-form-field appearance="outline">
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          name="search"
-          placeholder="Search..."
-          autocomplete="off"
-        />
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
+      <app-search></app-search>
     </div>
   </div>
   <div class="content">
-    <div class="filter"></div>
-    <div class="items"></div>
+    <router-outlet></router-outlet>
   </div>
 </div>
-
-<router-outlet></router-outlet>

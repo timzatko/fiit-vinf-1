@@ -1,0 +1,13 @@
+<h1>
+  Search results for - <i>"{{ searchQuery }}"</i>
+</h1>
+
+<ng-container *ngIf="items; else noItems">
+  <app-grid>
+    <ng-container *ngFor="let item of items">
+      <app-item [item]="item"></app-item>
+    </ng-container>
+  </app-grid>
+</ng-container>
+
+<ng-template #noItems>loading...</ng-template>

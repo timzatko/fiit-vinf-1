@@ -1,0 +1,40 @@
+<mat-form-field appearance="outline">
+  <mat-label>Search</mat-label>
+  <input
+    matInput
+    name="search"
+    placeholder="Search..."
+    autocomplete="off"
+    [matAutocomplete]="auto"
+    [formControl]="searchQueryControl"
+    (keyup.enter)="onKeyUpEnter()"
+  />
+  <mat-autocomplete [displayWith]="displayWith" #auto="matAutocomplete">
+    <mat-option
+      *ngFor="let item of suggestions | async"
+      [value]="item._source.name"
+      (onSelectionChange)="onOptionSelect({ type: 'document', document: item })"
+    >
+      <span>{{ item._source.name }}</span> |
+      <i>{{ item._source.category }}</i> |
+      <ng-container *ngIf="item._source.old_price; else samePrice">
+        <small
+          ><b>${{ item._source.price }}</b></small
+        >&nbsp;
+        <small
+          >(<s>${{ item._source.old_price }}</s
+          >)</small
+        >
+      </ng-container>
+      <ng-template #samePrice>
+        <small>${{ item._source.price }}</small>
+      </ng-template>
+    </mat-option>
+    <ng-container *ngIf="searchQuery && searchQuery.length > 3">
+      <mat-option [value]="searchQuery"
+        >Search for "{{ searchQuery }}"</mat-option
+      >
+    </ng-container>
+  </mat-autocomplete>
+  <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
