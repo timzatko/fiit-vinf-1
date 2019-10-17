@@ -25,13 +25,33 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Sort by</mat-label>
+    <mat-label>Sort By</mat-label>
     <mat-select [formControl]="sortControl">
       <mat-option [value]="SORT_BY_RELEVANCE">Relevance</mat-option>
       <mat-option *ngFor="let sort of sorts" [value]="sort.value">
         {{ sort.name }}
       </mat-option>
     </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Price From</mat-label>
+    <input
+      matInput
+      placeholder="Amount"
+      type="number"
+      [formControl]="priceFromControl"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Price To</mat-label>
+    <input
+      matInput
+      placeholder="Amount"
+      type="number"
+      [formControl]="priceToControl"
+    />
   </mat-form-field>
 
   <div class="search-button">

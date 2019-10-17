@@ -111,6 +111,7 @@ export class SearchService {
     filters: {
       publicationDate: number | typeof ALL_PUBLICATION_YEARS;
       category: string | typeof ALL_CATEGORIES;
+      price: { from: number | undefined; to: number | undefined };
     },
     sortBy: { [key: string]: "asc" | "desc" } | typeof SORT_BY_RELEVANCE,
     limits: { from: number; size: number } = { from: 0, size: 20 }
@@ -168,6 +169,26 @@ export class SearchService {
       filter.push({
         term: {
           "category.keyword": filters.category
+        }
+      });
+    }
+
+    if (typeof filters.price.from !== "undefined") {
+      filter.push({
+        range: {
+          price: {
+            gte: filters.price.from
+          }
+        }
+      });
+    }
+
+    if (typeof filters.price.to !== "undefined") {
+      filter.push({
+        range: {
+          price: {
+            lte: filters.price.to
+          }
         }
       });
     }

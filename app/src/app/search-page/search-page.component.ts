@@ -51,6 +51,8 @@ export class SearchPageComponent implements OnInit {
   categoryControl = new FormControl(ALL_CATEGORIES);
   publicationYearControl = new FormControl(ALL_PUBLICATION_YEARS);
   sortControl = new FormControl(SORT_BY_RELEVANCE);
+  priceFromControl = new FormControl();
+  priceToControl = new FormControl();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -83,7 +85,11 @@ export class SearchPageComponent implements OnInit {
           this.searchQuery,
           {
             category: this.categoryControl.value,
-            publicationDate: this.publicationYearControl.value
+            publicationDate: this.publicationYearControl.value,
+            price: {
+              from: this.priceFromControl.value,
+              to: this.priceToControl.value
+            }
           },
           this.sortControl.value,
           {
