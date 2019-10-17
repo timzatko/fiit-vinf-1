@@ -5,4 +5,5 @@ export class Item {
   image: string;
   category: string;
   old_price: number;
+  editorial_reviews: string;
 }

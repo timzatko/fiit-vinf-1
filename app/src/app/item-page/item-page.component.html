@@ -20,6 +20,13 @@
         <span>${{ item.price }}</span>
       </ng-template>
     </div>
+    <div
+      *ngIf="item.editorial_reviews && item.editorial_reviews.length"
+      class="editorial-reviews"
+    >
+      <h3>Editorial Reviews</h3>
+      <p>{{ item.editorial_reviews }}</p>
+    </div>
     <table>
       <tr *ngFor="let info of information">
         <td *ngIf="propertyExists(info.key)">{{ info.name }}:</td>

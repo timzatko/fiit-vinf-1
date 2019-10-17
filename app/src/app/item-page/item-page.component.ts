@@ -15,7 +15,8 @@ export class ItemPageComponent implements OnInit {
 
   information: { name: string; key: string }[] = [
     { name: "ISBN", key: "isbn-13" },
-    { name: "Publisher", key: "publisher" }
+    { name: "Publisher", key: "publisher" },
+    { name: "Age range", key: "age_range" }
   ];
 
   constructor(
