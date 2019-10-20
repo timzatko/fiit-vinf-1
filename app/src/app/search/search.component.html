@@ -13,7 +13,7 @@
     <mat-option
       *ngFor="let item of suggestions | async"
       [value]="item.document._source.name"
-      (onSelectionChange)="onOptionSelect({ type: 'document', document: item })"
+      (onSelectionChange)="onOptionSelect({ type: 'item', document: item })"
     >
       <ng-container *ngIf="item.type === 'author-suggestion'">
         <mat-icon>person</mat-icon>
@@ -42,7 +42,9 @@
       </ng-template>
     </mat-option>
     <ng-container *ngIf="searchQuery && searchQuery.length > 3">
-      <mat-option [value]="searchQuery"
+      <mat-option
+        [value]="searchQuery"
+        (onSelectionChange)="onOptionSelect(searchQuery)"
         >Search for "{{ searchQuery }}"...</mat-option
       >
     </ng-container>

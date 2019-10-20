@@ -40,8 +40,15 @@ export class SearchService {
     if (Number.isInteger(isbn13)) {
       query = {
         query: {
-          term: {
-            "isbn-13": isbn13
+          bool: {
+            should: [
+              {
+                term: {
+                  "isbn-13": isbn13
+                }
+              }
+            ],
+            boost: 1000
           }
         }
       };
@@ -54,20 +61,20 @@ export class SearchService {
         ...query,
         suggest: {
           name: {
-            text,
+            prefix: text,
             completion: {
               field: "name.completion",
               fuzzy: {
-                fuzziness: 1
+                fuzziness: "AUTO"
               }
             }
           },
           author: {
-            text,
+            prefix: text,
             completion: {
               field: "author.completion",
               fuzzy: {
-                fuzziness: 1
+                fuzziness: "AUTO"
               }
             }
           }
