@@ -1,5 +1,12 @@
 <h1 *ngIf="searchQuery && searchQuery.length">
   Search results for - <i>"{{ searchQuery }}"</i>
+  <button
+    mat-icon-button
+    aria-label="Remove search query"
+    (click)="onCancelClick()"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
 </h1>
 
 <div class="filters">
@@ -34,28 +41,54 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Price From</mat-label>
-    <input
-      matInput
-      placeholder="Amount"
-      type="number"
-      [formControl]="priceFromControl"
-    />
-  </mat-form-field>
+  <div class="sub-filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Price From</mat-label>
+      <input
+        matInput
+        placeholder="Amount"
+        type="number"
+        [formControl]="priceFromControl"
+      />
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Price To</mat-label>
-    <input
-      matInput
-      placeholder="Amount"
-      type="number"
-      [formControl]="priceToControl"
-    />
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Price To</mat-label>
+      <input
+        matInput
+        placeholder="Amount"
+        type="number"
+        [formControl]="priceToControl"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="sub-filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Pages From</mat-label>
+      <input
+        matInput
+        placeholder="Amount"
+        type="number"
+        [formControl]="pagesFromControl"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Pages To</mat-label>
+      <input
+        matInput
+        placeholder="Amount"
+        type="number"
+        [formControl]="pagesToControl"
+      />
+    </mat-form-field>
+  </div>
 
   <div class="search-button">
-    <button mat-raised-button color="primary" (click)="search()">Search</button>
+    <button mat-raised-button color="primary" (click)="doSearch()">
+      Search
+    </button>
   </div>
 </div>
 

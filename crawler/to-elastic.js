@@ -113,7 +113,7 @@ function formatItem(data) {
   Object.keys(data).forEach(key => {
     const value = data[key];
 
-    if (!value || !value.length) {
+    if (!value || !value.length || ["format"].includes(key)) {
       delete data[key];
     } else if (["price", "old_price"].includes(key)) {
       data[key] = formatPrice(value);

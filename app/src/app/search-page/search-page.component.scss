@@ -3,9 +3,25 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 8px;
   align-items: center;
+
+  .sub-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 4px;
+    align-items: center;
+  }
 }
 
 .search-button {
   margin: 0.25em 0;
   padding-bottom: 1.34375em;
+
+  button {
+    width: 100%;
+  }
+}
+
+h1 {
+  display: flex;
+  align-items: center;
 }

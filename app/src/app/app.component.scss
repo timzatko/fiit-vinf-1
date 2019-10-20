@@ -4,7 +4,6 @@
   display: grid;
   grid-template-columns: auto auto;
   padding: 40px 12px 8px 12px;
-  border-bottom: 2px solid $primary;
 
   .left-column {
     display: flex;
@@ -16,7 +15,8 @@
   }
 }
 
-h1 > a {
+h1 > a,
+h3 > a {
   color: inherit;
   text-decoration: inherit;
 

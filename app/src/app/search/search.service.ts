@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ElasticSearchService } from "../elastic-search/elastic-search.service";
-import { from, Observable } from "rxjs";
+import { BehaviorSubject, from, Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import {
@@ -20,12 +20,20 @@ import {
   providedIn: "root"
 })
 export class SearchService {
+  searchQuery$ = new BehaviorSubject<string>(undefined);
+
   constructor(
     private elasticSearchService: ElasticSearchService,
     private httpClient: HttpClient
   ) {}
 
-  getAutocompleteSuggestions(text: string): Observable<AutoCompleteItem[]> {
+  getAutocompleteSuggestions(
+    text: string | undefined
+  ): Observable<AutoCompleteItem[]> {
+    if (typeof text === "undefined" || !text.length) {
+      return of([]);
+    }
+
     let query = undefined;
 
     const isbn13 = Number(text);
@@ -112,57 +120,67 @@ export class SearchService {
       publicationDate: number | typeof ALL_PUBLICATION_YEARS;
       category: string | typeof ALL_CATEGORIES;
       price: { from: number | undefined; to: number | undefined };
+      pages: { from: number | undefined; to: number | undefined };
     },
     sortBy: { [key: string]: "asc" | "desc" } | typeof SORT_BY_RELEVANCE,
     limits: { from: number; size: number } = { from: 0, size: 20 }
   ): Observable<Hits<Document<Item>>> {
+    let should: any | undefined = undefined;
+
     const filter: any[] = [];
 
-    const queries: any[] = [
-      {
-        constant_score: {
-          filter: {
-            match: { name: query }
-          },
-          boost: 10
+    if (typeof query !== "undefined" && query.length) {
+      const queries: any[] = [
+        {
+          constant_score: {
+            filter: {
+              match: { name: query }
+            },
+            boost: 10
+          }
+        },
+        {
+          constant_score: {
+            filter: {
+              match: { author: query }
+            },
+            boost: 3
+          }
+        },
+        {
+          constant_score: {
+            filter: {
+              match: { description: query }
+            },
+            boost: 3
+          }
+        },
+        {
+          constant_score: {
+            filter: {
+              match: { editorial_reviews: query }
+            },
+            boost: 1
+          }
         }
-      },
-      {
-        constant_score: {
-          filter: {
-            match: { author: query }
-          },
-          boost: 3
-        }
-      },
-      {
-        constant_score: {
-          filter: {
-            match: { description: query }
-          },
-          boost: 3
-        }
-      },
-      {
-        constant_score: {
-          filter: {
-            match: { editorial_reviews: query }
-          },
-          boost: 1
-        }
-      }
-    ];
+      ];
 
-    const isbn13 = Number(query);
-    if (Number.isInteger(isbn13)) {
-      queries.push({
-        constant_score: {
-          filter: {
-            term: { "isbn-13": isbn13 }
-          },
-          boost: 100
-        }
-      });
+      const isbn13 = Number(query);
+      if (Number.isInteger(isbn13)) {
+        queries.push({
+          constant_score: {
+            filter: {
+              term: { "isbn-13": isbn13 }
+            },
+            boost: 100
+          }
+        });
+      }
+
+      should = {
+        should: queries,
+        minimum_should_match: 1
+      };
     }
 
     if (typeof filters.category !== "symbol") {
@@ -173,7 +191,7 @@ export class SearchService {
       });
     }
 
-    if (typeof filters.price.from !== "undefined") {
+    if (Number.isInteger(filters.price.from)) {
       filter.push({
         range: {
           price: {
@@ -183,11 +201,31 @@ export class SearchService {
       });
     }
 
-    if (typeof filters.price.to !== "undefined") {
+    if (Number.isInteger(filters.price.to)) {
       filter.push({
         range: {
           price: {
             lte: filters.price.to
+          }
+        }
+      });
+    }
+
+    if (Number.isInteger(filters.pages.from)) {
+      filter.push({
+        range: {
+          pages: {
+            gte: filters.pages.from
+          }
+        }
+      });
+    }
+
+    if (Number.isInteger(filters.pages.to)) {
+      filter.push({
+        range: {
+          pages: {
+            lte: filters.pages.to
           }
         }
       });
@@ -237,8 +275,7 @@ export class SearchService {
           query: {
             bool: {
               filter: filter,
-              should: queries,
-              minimum_should_match: 1
+              ...should
             }
           }
         }

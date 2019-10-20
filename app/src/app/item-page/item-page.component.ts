@@ -24,7 +24,8 @@ export class ItemPageComponent implements OnInit {
     { name: "Series", key: "series" },
     { name: "Upc", key: "upc" },
     { name: "Format", key: "format" },
-    { name: "Product dimensions", key: "product_dimensions" }
+    { name: "Product dimensions", key: "product_dimensions" },
+    { name: "Edition description", key: "edition_description" }
   ];
 
   constructor(

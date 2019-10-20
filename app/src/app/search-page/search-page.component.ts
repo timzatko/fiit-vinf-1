@@ -1,10 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Item } from "../item/item";
 import { SearchService } from "../search/search.service";
 import { Document } from "../elastic-search/elastic-search.types";
 import { FormControl } from "@angular/forms";
 import { PageEvent } from "@angular/material/paginator";
+import { BehaviorSubject, Subject } from "rxjs";
+import { debounceTime, takeUntil } from "rxjs/operators";
 
 export const ALL_CATEGORIES = Symbol("All Categories");
 export const ALL_PUBLICATION_YEARS = Symbol("All Publication Years");
@@ -15,9 +17,7 @@ export const SORT_BY_RELEVANCE = Symbol("Sort By Relevance");
   templateUrl: "./search-page.component.html",
   styleUrls: ["./search-page.component.scss"]
 })
-export class SearchPageComponent implements OnInit {
-  searchQuery: string;
-
+export class SearchPageComponent implements OnInit, OnDestroy {
   resultCount: number;
   currentPage = 0;
   pageSize = 20;
@@ -43,7 +43,9 @@ export class SearchPageComponent implements OnInit {
     { value: { average_rating: "asc" }, name: "Rating (ASC)" },
     { value: { average_rating: "desc" }, name: "Rating (DESC)" },
     { value: { price: "asc" }, name: "Price (ASC)" },
-    { value: { price: "desc" }, name: "Price (DESC)" }
+    { value: { price: "desc" }, name: "Price (DESC)" },
+    { value: { sales_rank: "asc" }, name: "Sales rank (ASC)" },
+    { value: { sales_rank: "desc" }, name: "Sales rank (DESC)" }
   ];
 
   publicationYears: number[] = [];
@@ -53,6 +55,14 @@ export class SearchPageComponent implements OnInit {
   sortControl = new FormControl(SORT_BY_RELEVANCE);
   priceFromControl = new FormControl();
   priceToControl = new FormControl();
+  pagesFromControl = new FormControl();
+  pagesToControl = new FormControl();
+
+  unsubscribe$ = new Subject();
+
+  get searchQuery() {
+    return this.searchService.searchQuery$.getValue();
+  }
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -68,47 +78,71 @@ export class SearchPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.search();
+    this.doSearch();
 
     this.publicationYears = new Array(200).fill(0).map((_, index) => {
       return this._thisYear() - index;
     });
+
+    this.activatedRoute.queryParams
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(queryParams => {
+        this.searchService.searchQuery$.next(queryParams["q"]);
+      });
+
+    this.searchService.searchQuery$
+      .asObservable()
+      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(debounceTime(100))
+      .subscribe(searchQuery => {
+        this.doSearch(searchQuery);
+      });
   }
 
-  search() {
-    this.activatedRoute.queryParams.subscribe(queryParams => {
-      this.searchQuery = queryParams["q"];
-      this.items = null;
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
-      this.searchService
-        .getBySearchQuery(
-          this.searchQuery,
-          {
-            category: this.categoryControl.value,
-            publicationDate: this.publicationYearControl.value,
-            price: {
-              from: this.priceFromControl.value,
-              to: this.priceToControl.value
-            }
+  doSearch(searchQuery: string = this.searchQuery) {
+    this.items = null;
+
+    this.searchService
+      .getBySearchQuery(
+        searchQuery,
+        {
+          category: this.categoryControl.value,
+          publicationDate: this.publicationYearControl.value,
+          price: {
+            from: this.priceFromControl.value,
+            to: this.priceToControl.value
           },
-          this.sortControl.value,
-          {
-            from: this.pageSize * this.currentPage,
-            size: this.pageSize
+          pages: {
+            from: this.pagesFromControl.value,
+            to: this.pagesToControl.value
           }
-        )
-        .subscribe(hits => {
-          this.resultCount = hits.total.value;
+        },
+        this.sortControl.value,
+        {
+          from: this.pageSize * this.currentPage,
+          size: this.pageSize
+        }
+      )
+      .subscribe(hits => {
+        this.resultCount = hits.total.value;
 
-          this.items = hits.hits;
-        });
-    });
+        this.items = hits.hits;
+      });
   }
 
   onPageChange(page: PageEvent) {
     this.currentPage = page.pageIndex;
 
-    this.search();
+    this.doSearch();
+  }
+
+  onCancelClick() {
+    this.searchService.searchQuery$.next("");
   }
 
   private _thisYear() {
