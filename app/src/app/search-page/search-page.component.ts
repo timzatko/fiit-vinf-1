@@ -45,7 +45,15 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     { value: { price: "asc" }, name: "Price (ASC)" },
     { value: { price: "desc" }, name: "Price (DESC)" },
     { value: { sales_rank: "asc" }, name: "Sales rank (ASC)" },
-    { value: { sales_rank: "desc" }, name: "Sales rank (DESC)" }
+    { value: { sales_rank: "desc" }, name: "Sales rank (DESC)" },
+    {
+      value: { publication_date: "asc", release_date: "asc" },
+      name: "Publication / Release date (ASC)"
+    },
+    {
+      value: { publication_date: "desc", release_date: "desc" },
+      name: "Publication / Release date (DESC)"
+    }
   ];
 
   publicationYears: number[] = [];
