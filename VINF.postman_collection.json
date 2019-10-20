@@ -67,7 +67,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{}",
+          "raw": "{\n  \"settings\": {\n    \"sort.field\": [\n      \"publication_date\",\n      \"publication_date\",\n      \"release_date\",\n      \"release_date\",\n      \"price\",\n      \"price\",\n      \"average_rating\",\n      \"average_rating\",\n      \"sales_rank\",\n      \"sales_rank\"\n    ],\n    \"sort.order\": [\n      \"asc\",\n      \"desc\",\n      \"asc\",\n      \"desc\",\n      \"asc\",\n      \"desc\",\n      \"asc\",\n      \"desc\",\n      \"asc\",\n      \"desc\"\n    ]\n  },\n  \"mappings\": {\n    \"properties\": {\n      \"age_range\": {\n        \"type\": \"text\"\n      },\n      \"author\": {\n        \"type\": \"text\",\n        \"fields\": {\n          \"completion\": {\n            \"type\": \"completion\"\n          }\n        },\n        \"analyzer\": \"standard\"\n      },\n      \"average_rating\": {\n        \"type\": \"float\"\n      },\n      \"category\": {\n        \"type\": \"keyword\"\n      },\n      \"price\": {\n        \"type\": \"float\"\n      },\n      \"description\": {\n        \"type\": \"text\",\n        \"analyzer\": \"english\"\n      },\n      \"edition_description\": {\n        \"type\": \"text\"\n      },\n      \"editorial_reviews\": {\n        \"type\": \"text\",\n        \"analyzer\": \"english\"\n      },\n      \"file_size\": {\n        \"properties\": {\n          \"size\": {\n            \"type\": \"long\"\n          },\n          \"units\": {\n            \"type\": \"text\",\n            \"fields\": {\n              \"keyword\": {\n                \"type\": \"keyword\"\n              }\n            }\n          }\n        }\n      },\n      \"image\": {\n        \"type\": \"text\"\n      },\n      \"isbn-13\": {\n        \"type\": \"long\"\n      },\n      \"name\": {\n        \"type\": \"text\",\n        \"fields\": {\n          \"completion\": {\n            \"type\": \"completion\"\n          }\n        },\n        \"analyzer\": \"standard\"\n      },\n      \"old_price\": {\n        \"type\": \"float\"\n      },\n      \"pages\": {\n        \"type\": \"long\"\n      },\n      \"product_dimensions\": {\n        \"type\": \"text\"\n      },\n      \"publication_date\": {\n        \"type\": \"date\",\n        \"format\": \"MM/dd/yyyy\"\n      },\n      \"publisher\": {\n        \"type\": \"text\",\n        \"fields\": {\n          \"keyword\": {\n            \"type\": \"keyword\",\n            \"ignore_above\": 256\n          }\n        }\n      },\n      \"release_date\": {\n        \"type\": \"date\",\n        \"format\": \"MM/dd/yyyy\"\n      },\n      \"sales_rank\": {\n        \"type\": \"long\"\n      },\n      \"series\": {\n        \"type\": \"text\"\n      },\n      \"upc\": {\n        \"type\": \"text\"\n      },\n      \"url\": {\n        \"type\": \"text\"\n      }\n    }\n  }\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -129,7 +129,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"query\": {\n\t\t\"term\": {\n\t\t\t\"isbn-13\": 9781733646802\n\t\t}\n\t},\n\t\"suggest\" : {\n\t\t\"suggestion\": {\n    \t\t\"prefix\": \"marry christm\",\n    \t\t\"completion\": {\n        \t\t\"field\": \"name.completion\",\n        \t\t\"fuzzy\": {\n        \t\t\t\"fuzziness\": 1\n        \t\t}\n    \t\t}\n    \t}\n\t}\n}",
+          "raw": "{\n  \"query\": {\n    \"bool\": {\n      \"should\": [\n        {\n          \"term\": {\n            \"isbn-13\": 123\n          }\n        }\n      ],\n      \"boost\": 1000\n    }\n  },\n  \"suggest\": {\n    \"name\": {\n      \"prefix\": \"123\",\n      \"completion\": {\n        \"field\": \"name.completion\",\n        \"fuzzy\": {\n          \"fuzziness\": 1\n        }\n      }\n    },\n    \"author\": {\n      \"prefix\": \"123\",\n      \"completion\": {\n        \"field\": \"author.completion\",\n        \"fuzzy\": {\n          \"fuzziness\": 1\n        }\n      }\n    }\n  }\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -206,68 +206,6 @@
           "host": ["localhost"],
           "port": "9200",
           "path": ["items", "_count"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "POST Update index settings",
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"index\": {\n    \"sort.field\": [\n      \"publication_date\",\n      \"publication_date\",\n      \"release_date\",\n      \"release_date\",\n      \"price\",\n      \"price\",\n      \"average_rating\",\n      \"average_rating\",\n      \"sales_rank\",\n      \"sales_rank\"\n    ],\n    \"sort.order\": [\n      \"asc\",\n      \"desc\",\n      \"asc\",\n      \"desc\",\n      \"asc\",\n      \"desc\",\n      \"asc\",\n      \"desc\",\n      \"asc\",\n      \"desc\"\n    ]\n  }\n}\n",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:9200/items/_settings",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "9200",
-          "path": ["items", "_settings"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "POST Update index mapping",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"properties\": {\n    \"age_range\": {\n      \"type\": \"text\",\n      \"fields\": {\n        \"keyword\": {\n          \"type\": \"keyword\",\n          \"ignore_above\": 256\n        }\n      }\n    },\n    \"author\": {\n      \"type\": \"text\",\n      \"fields\": {\n        \"completion\": {\n          \"type\": \"completion\"\n        }\n      },\n      \"analyzer\": \"standard\"\n    },\n    \"average_rating\": {\n      \"type\": \"float\"\n    },\n    \"category\": {\n      \"type\": \"text\",\n      \"fields\": {\n        \"keyword\": {\n          \"type\": \"keyword\",\n          \"ignore_above\": 256\n        }\n      }\n    },\n    \"price\": {\n      \"type\": \"float\"\n    },\n    \"description\": {\n      \"type\": \"text\",\n      \"analyzer\": \"english\"\n    },\n    \"edition_description\": {\n      \"type\": \"text\"\n    },\n    \"editorial_reviews\": {\n      \"type\": \"text\",\n      \"analyzer\": \"english\"\n    },\n    \"file_size\": {\n      \"properties\": {\n        \"size\": {\n          \"type\": \"long\"\n        },\n        \"units\": {\n          \"type\": \"text\",\n          \"fields\": {\n            \"keyword\": {\n              \"type\": \"keyword\",\n              \"ignore_above\": 256\n            }\n          }\n        }\n      }\n    },\n    \"image\": {\n      \"type\": \"text\"\n    },\n    \"isbn-13\": {\n      \"type\": \"long\"\n    },\n    \"name\": {\n      \"type\": \"text\",\n      \"fields\": {\n        \"completion\": {\n          \"type\": \"completion\"\n        }\n      },\n      \"analyzer\": \"standard\"\n    },\n    \"old_price\": {\n      \"type\": \"float\"\n    },\n    \"pages\": {\n      \"type\": \"long\"\n    },\n    \"product_dimensions\": {\n      \"type\": \"text\"\n    },\n    \"publication_date\": {\n      \"type\": \"date\",\n      \"format\": \"MM/dd/yyyy\"\n    },\n    \"publisher\": {\n      \"type\": \"text\"\n    },\n    \"release_date\": {\n      \"type\": \"date\",\n      \"format\": \"MM/dd/yyyy\"\n    },\n    \"sales_rank\": {\n      \"type\": \"long\"\n    },\n    \"series\": {\n      \"type\": \"text\"\n    },\n    \"upc\": {\n      \"type\": \"text\"\n    },\n    \"url\": {\n      \"type\": \"text\"\n    }\n  }\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:9200/items/_mapping",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "9200",
-          "path": ["items", "_mapping"]
         }
       },
       "response": []
