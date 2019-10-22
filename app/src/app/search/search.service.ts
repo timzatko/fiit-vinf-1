@@ -193,7 +193,7 @@ export class SearchService {
     if (typeof filters.category !== "symbol") {
       filter.push({
         term: {
-          "category.keyword": filters.category
+          category: filters.category
         }
       });
     }
