@@ -47,8 +47,7 @@ export class SearchService {
                   "isbn-13": isbn13
                 }
               }
-            ],
-            boost: 1000
+            ]
           }
         }
       };
