@@ -33,8 +33,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     { value: "Kids' Books", name: "Kids' Books" },
     { value: "Newsstand", name: "Newsstand" },
     { value: "NOOK Books", name: "NOOK Books" },
-    { value: "Gift, Home & Office", name: "Gift, Home & Office" },
-    { value: "Toys", name: "Toys" },
+    // { value: "Gift, Home & Office", name: "Gift, Home & Office" },
+    // { value: "Toys", name: "Toys" },
     { value: "Movies & TV", name: "Movies & TV" },
     { value: "NOOK", name: "NOOK" }
   ];
