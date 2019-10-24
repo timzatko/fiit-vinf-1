@@ -130,7 +130,7 @@ export class SearchService {
     },
     sortBy: { [key: string]: "asc" | "desc" } | typeof SORT_BY_RELEVANCE,
     limits: { from: number; size: number } = { from: 0, size: 20 }
-  ): Observable<Hits<Document<Item>>> {
+  ): Observable<SearchResponse<Document<Item>>> {
     let should: any | undefined = undefined;
 
     const filter: any[] = [];
@@ -283,10 +283,38 @@ export class SearchService {
               filter: filter,
               ...should
             }
+          },
+          aggregations: {
+            min_price: {
+              min: {
+                field: "price"
+              }
+            },
+            avg_price: {
+              avg: {
+                field: "price"
+              }
+            },
+            max_price: {
+              max: {
+                field: "price"
+              }
+            },
+            prices: {
+              histogram: {
+                field: "price",
+                interval: 10
+              }
+            },
+            significant_publisher: {
+              significant_terms: {
+                field: "publisher.keyword"
+              }
+            }
           }
         }
       )
-    ).pipe(map(resp => resp.hits));
+    );
   }
 }
 

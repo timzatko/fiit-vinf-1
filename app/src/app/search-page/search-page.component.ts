@@ -68,6 +68,8 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   unsubscribe$ = new Subject();
 
+  aggregations: any;
+
   get searchQuery() {
     return this.searchService.searchQuery$.getValue();
   }
@@ -114,6 +116,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   doSearch(searchQuery: string = this.searchQuery) {
     this.items = null;
+    this.aggregations = null;
 
     this.searchService
       .getBySearchQuery(
@@ -136,10 +139,13 @@ export class SearchPageComponent implements OnInit, OnDestroy {
           size: this.pageSize
         }
       )
-      .subscribe(hits => {
-        this.resultCount = hits.total.value;
+      .subscribe(result => {
+        const hits = result.hits;
 
         this.items = hits.hits;
+        this.resultCount = hits.total.value;
+
+        this.aggregations = result.aggregations;
       });
   }
 
@@ -151,6 +157,69 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
   onCancelClick() {
     this.searchService.searchQuery$.next("");
+  }
+
+  getMaxPrice() {
+    const max_price = this.aggregations.max_price;
+    return max_price && this.toDecimal(max_price.value);
+  }
+
+  getMinPrice() {
+    const min_price = this.aggregations.min_price;
+    return min_price && this.toDecimal(min_price.value);
+  }
+
+  getAvgPrice() {
+    const avg_price = this.aggregations.avg_price;
+    return avg_price && this.toDecimal(avg_price.value);
+  }
+
+  hasMaxPrice() {
+    return typeof this.getMaxPrice() !== "undefined";
+  }
+
+  hasMinPrice() {
+    return typeof this.getMinPrice() !== "undefined";
+  }
+
+  hasAvgPrice() {
+    return typeof this.getAvgPrice() !== "undefined";
+  }
+
+  hasPrices() {
+    let prices = this.getPrices();
+    return prices && !!prices.length;
+  }
+
+  getPrices(): { from: number; to: number; count: number }[] {
+    const prices = this.aggregations.prices;
+    const buckets = prices.buckets;
+
+    return buckets
+      .map(val => ({
+        from: Number(val.key.toFixed(0)),
+        to: Number(val.key.toFixed(0)) + 10,
+        count: val.doc_count
+      }))
+      .filter(val => val.count);
+  }
+
+  hasSignificantPublisher() {
+    const significantPublisher = this.getSignificantPublisher();
+    return significantPublisher && !!significantPublisher.length;
+  }
+
+  getSignificantPublisher() {
+    const significantPublisher = this.aggregations.significant_publisher;
+
+    return significantPublisher.buckets.map(val => ({
+      key: val.key,
+      count: val.doc_count
+    }));
+  }
+
+  toDecimal(val: number) {
+    return val && val.toFixed(2);
   }
 
   private _thisYear() {

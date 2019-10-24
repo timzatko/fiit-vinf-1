@@ -20,6 +20,7 @@ export type SearchResponse<Doc> = {
     failed: number;
   };
   hits: Hits<Doc>;
+  aggregations: any;
 };
 
 export interface Hits<Doc> {

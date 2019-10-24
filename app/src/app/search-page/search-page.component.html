@@ -92,24 +92,59 @@
   </div>
 </div>
 
+<ng-container *ngIf="aggregations">
+  <p *ngIf="hasMaxPrice() || hasAvgPrice() || hasMinPrice()">
+    <ng-container *ngIf="hasMaxPrice()"
+      >Maximum item price ${{ getMaxPrice() }} |&nbsp;</ng-container
+    >
+    <ng-container *ngIf="hasAvgPrice()"
+      >Average item price ${{ getAvgPrice() }} |&nbsp;</ng-container
+    >
+    <ng-container *ngIf="hasMinPrice()"
+      >Minimum item price ${{ getMinPrice() }}</ng-container
+    >
+  </p>
+
+  <p *ngIf="hasPrices()">
+    <span><b>Number of items by price range | </b></span>
+    <span *ngFor="let price of getPrices(); let last = last">
+      ${{ price.from }} - ${{ price.to }} ({{ price.count }})
+      <ng-container *ngIf="!last">&nbsp;&nbsp;|&nbsp;&nbsp;</ng-container>
+    </span>
+  </p>
+
+  <p *ngIf="hasSignificantPublisher()">
+    <span><b>Significant publishers | </b></span>
+    <span *ngFor="let publisher of getSignificantPublisher(); let last = last">
+      <i>{{ publisher.key }}</i> ({{ publisher.count }})
+      <ng-container *ngIf="!last">&nbsp;&nbsp;|&nbsp;&nbsp;</ng-container>
+    </span>
+  </p>
+</ng-container>
+
 <ng-container *ngIf="items; else noItems">
-  <p>Showing page {{ currentPage + 1 }} of {{ resultCount }} results.</p>
+  <ng-container *ngIf="resultCount; else noResults">
+    <p>Showing page {{ currentPage + 1 }} of {{ resultCount }} results.</p>
 
-  <app-grid>
-    <ng-container *ngFor="let item of items">
-      <app-item [item]="item"></app-item>
-    </ng-container>
-  </app-grid>
+    <app-grid>
+      <ng-container *ngFor="let item of items">
+        <app-item [item]="item"></app-item>
+      </ng-container>
+    </app-grid>
 
-  <p *ngIf="!resultCount">No results matching query and filters.</p>
+    <p *ngIf="!resultCount">No results matching query and filters.</p>
 
-  <mat-paginator
-    [length]="resultCount"
-    [pageSize]="pageSize"
-    [pageIndex]="currentPage"
-    (page)="onPageChange($event)"
-  >
-  </mat-paginator>
+    <mat-paginator
+      [length]="resultCount"
+      [pageSize]="pageSize"
+      [pageIndex]="currentPage"
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
+  </ng-container>
+  <ng-template #noResults>
+    <h3>No results</h3>
+  </ng-template>
 </ng-container>
 
 <ng-template #noItems>
