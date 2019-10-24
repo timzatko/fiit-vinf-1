@@ -1,3 +1,5 @@
+const SLEEP_TIME = 2000; // sleep medzi requestami je 2s
+
 // imports
 const path = require("path");
 const fs = require("fs-extra");
@@ -65,7 +67,7 @@ const productAttributes = [
 
 // crawler
 const crawler = new Crawler({
-  maxConnections: 5
+  // maxConnections: 5
   // rateLimit: 50,
 });
 
@@ -198,17 +200,21 @@ const itemCallback = (e, response, done) => {
   }
 };
 
-getSites().then(sites => {
-  sites.forEach(uri => {
+getSites().then(async sites => {
+  for (let uri of sites) {
     if (!fs.existsSync(getHtmlOutPath(uri))) {
-      crawler.queue([
-        {
-          uri,
-          callback: itemCallback
-        }
-      ]);
+      await new Promise(resolve => {
+        crawler.queue([
+          {
+            uri,
+            callback: itemCallback
+          }
+        ]);
+
+        setTimeout(resolve, SLEEP_TIME); // sleep je nastaveny na 1000 ms
+      });
     } else {
       increment(uri, "[SKIP] ");
     }
-  });
+  }
 });
