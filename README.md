@@ -34,7 +34,7 @@ Then the app can be launched via docker-compose.
 docker-compose up
 ```
 
-- App Frontend will be running on [http://localhost:4200](http://localhost:4200)
+- App (frontend) will be running on [http://localhost:4200](http://localhost:4200)
 - Elasticsearch will be running on [http://localhost:9200](http://localhost:9200)
 - Kibana will be running on [http://localhost:5601](http://localhost:5601)
 
@@ -50,7 +50,8 @@ It also does the preprocessing of the data like removing the whitespaces or form
 
 1. Navigate to the _crawler_ directory `cd crawler`
 2. Run the crawler `npm start`. This will fetch the sitemap and will crawl all sites in parallel (websites and crawled data are in `crawler/out` and `crawler/out-html`).
-3. Import data to the Elastic `npm run export` (the Elasticsearch need to be running)
+3. Setup the _items_ index in Elasticsearch by running `sh setup/elasticsearch-index.sh`
+4. Import data to the Elastic `npm run export` (the Elasticsearch need to be running), the data will be sent in multiple bulks.
 
 ## Development
 

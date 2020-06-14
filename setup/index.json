@@ -1,0 +1,138 @@
+{
+  "settings": {
+    "sort.field": [
+      "publication_date",
+      "publication_date",
+      "release_date",
+      "release_date",
+      "price",
+      "price",
+      "average_rating",
+      "average_rating",
+      "sales_rank",
+      "sales_rank"
+    ],
+    "sort.order": [
+      "asc",
+      "desc",
+      "asc",
+      "desc",
+      "asc",
+      "desc",
+      "asc",
+      "desc",
+      "asc",
+      "desc"
+    ]
+  },
+  "mappings": {
+    "properties": {
+      "age_range": {
+        "type": "text"
+      },
+      "author": {
+        "type": "text",
+        "analyzer": "standard",
+        "fields": {
+          "completion": {
+            "type": "completion"
+          },
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "average_rating": {
+        "type": "float"
+      },
+      "category": {
+        "type": "keyword"
+      },
+      "price": {
+        "type": "float"
+      },
+      "description": {
+        "type": "text",
+        "analyzer": "english"
+      },
+      "edition_description": {
+        "type": "text"
+      },
+      "editorial_reviews": {
+        "type": "text",
+        "analyzer": "english"
+      },
+      "file_size": {
+        "properties": {
+          "size": {
+            "type": "long"
+          },
+          "units": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      },
+      "image": {
+        "type": "text"
+      },
+      "isbn-13": {
+        "type": "long"
+      },
+      "name": {
+        "type": "text",
+        "analyzer": "standard",
+        "fields": {
+          "completion": {
+            "type": "completion"
+          },
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "old_price": {
+        "type": "float"
+      },
+      "pages": {
+        "type": "long"
+      },
+      "product_dimensions": {
+        "type": "text"
+      },
+      "publication_date": {
+        "type": "date",
+        "format": "MM/dd/yyyy"
+      },
+      "publisher": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "release_date": {
+        "type": "date",
+        "format": "MM/dd/yyyy"
+      },
+      "sales_rank": {
+        "type": "long"
+      },
+      "series": {
+        "type": "text"
+      },
+      "upc": {
+        "type": "text"
+      },
+      "url": {
+        "type": "text"
+      }
+    }
+  }
+}

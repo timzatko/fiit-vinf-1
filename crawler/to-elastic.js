@@ -33,7 +33,7 @@ fs.createReadStream(path.resolve(__dirname, "out", "out.csv"))
       await send();
     }
 
-    console.log("Finished!");
+    console.log(`Finished, ${row} items sent!`);
     // console.log(csvHeader);
   });
 
@@ -53,7 +53,7 @@ function toJSON(row) {
 
 async function send() {
   if (!argv.dev) {
-    console.log(`Sending ${row - buffer.length} - ${row} in bulk!`);
+    console.log(`Sending ${buffer.length} items in bulk...`);
   }
 
   const body = [];

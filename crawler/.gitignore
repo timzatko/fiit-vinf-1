@@ -1,9 +1,2 @@
-node_modules
-
-out.csv
-out-copy.csv
+out
 out-html
-
-sites.txt
-
-.ipynb_checkpoints
