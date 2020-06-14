@@ -38,7 +38,7 @@ Then the app can be launched via docker-compose.
 docker-compose up
 ```
 
-- App (frontend) will be running on [http://localhost:4200](http://localhost:4200)
+- App (frontend) will be running on [http://localhost:8000](http://localhost:8000)
 - Elasticsearch will be running on [http://localhost:9200](http://localhost:9200)
 - Kibana will be running on [http://localhost:5601](http://localhost:5601)
 
