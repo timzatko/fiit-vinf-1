@@ -6,7 +6,7 @@ import { Document } from "../elastic-search/elastic-search.types";
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.scss"]
+  styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit {
   items: Document<Item>[];
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   constructor(private itemService: ItemService) {}
 
   ngOnInit() {
-    this.itemService.getFeatured().subscribe(items => {
+    this.itemService.getFeatured().subscribe((items) => {
       this.items = items;
     });
   }

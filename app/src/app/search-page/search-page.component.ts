@@ -15,7 +15,7 @@ export const SORT_BY_RELEVANCE = Symbol("Sort By Relevance");
 @Component({
   selector: "app-search-page",
   templateUrl: "./search-page.component.html",
-  styleUrls: ["./search-page.component.scss"]
+  styleUrls: ["./search-page.component.scss"],
 })
 export class SearchPageComponent implements OnInit, OnDestroy {
   resultCount: number;
@@ -36,7 +36,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     // { value: "Gift, Home & Office", name: "Gift, Home & Office" },
     // { value: "Toys", name: "Toys" },
     { value: "Movies & TV", name: "Movies & TV" },
-    { value: "NOOK", name: "NOOK" }
+    { value: "NOOK", name: "NOOK" },
   ];
 
   sorts: { value: { [key: string]: "asc" | "desc" }; name: string }[] = [
@@ -48,12 +48,12 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     { value: { sales_rank: "desc" }, name: "Sales rank (DESC)" },
     {
       value: { publication_date: "asc", release_date: "asc" },
-      name: "Publication / Release date (ASC)"
+      name: "Publication / Release date (ASC)",
     },
     {
       value: { publication_date: "desc", release_date: "desc" },
-      name: "Publication / Release date (DESC)"
-    }
+      name: "Publication / Release date (DESC)",
+    },
   ];
 
   publicationYears: number[] = [];
@@ -96,7 +96,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.queryParams
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(queryParams => {
+      .subscribe((queryParams) => {
         this.searchService.searchQuery$.next(queryParams["q"]);
       });
 
@@ -104,7 +104,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
       .asObservable()
       .pipe(takeUntil(this.unsubscribe$))
       .pipe(debounceTime(100))
-      .subscribe(searchQuery => {
+      .subscribe((searchQuery) => {
         this.doSearch(searchQuery);
       });
   }
@@ -126,20 +126,20 @@ export class SearchPageComponent implements OnInit, OnDestroy {
           publicationDate: this.publicationYearControl.value,
           price: {
             from: this.priceFromControl.value,
-            to: this.priceToControl.value
+            to: this.priceToControl.value,
           },
           pages: {
             from: this.pagesFromControl.value,
-            to: this.pagesToControl.value
-          }
+            to: this.pagesToControl.value,
+          },
         },
         this.sortControl.value,
         {
           from: this.pageSize * this.currentPage,
-          size: this.pageSize
+          size: this.pageSize,
         }
       )
-      .subscribe(result => {
+      .subscribe((result) => {
         const hits = result.hits;
 
         this.items = hits.hits;
@@ -196,12 +196,12 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     const buckets = prices.buckets;
 
     return buckets
-      .map(val => ({
+      .map((val) => ({
         from: Number(val.key.toFixed(0)),
         to: Number(val.key.toFixed(0)) + 10,
-        count: val.doc_count
+        count: val.doc_count,
       }))
-      .filter(val => val.count);
+      .filter((val) => val.count);
   }
 
   hasSignificantPublisher() {
@@ -212,9 +212,9 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   getSignificantPublisher() {
     const significantPublisher = this.aggregations.significant_publisher;
 
-    return significantPublisher.buckets.map(val => ({
+    return significantPublisher.buckets.map((val) => ({
       key: val.key,
-      count: val.doc_count
+      count: val.doc_count,
     }));
   }
 

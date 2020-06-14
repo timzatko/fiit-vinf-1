@@ -7,7 +7,7 @@ import { Document } from "../elastic-search/elastic-search.types";
 @Component({
   selector: "app-item-page",
   templateUrl: "./item-page.component.html",
-  styleUrls: ["./item-page.component.scss"]
+  styleUrls: ["./item-page.component.scss"],
 })
 export class ItemPageComponent implements OnInit {
   private itemDocument: Document<Item>;
@@ -25,7 +25,7 @@ export class ItemPageComponent implements OnInit {
     { name: "Upc", key: "upc" },
     { name: "Format", key: "format" },
     { name: "Product dimensions", key: "product_dimensions" },
-    { name: "Edition description", key: "edition_description" }
+    { name: "Edition description", key: "edition_description" },
   ];
 
   constructor(
@@ -34,10 +34,10 @@ export class ItemPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.subscribe((params) => {
       const id = params["id"];
 
-      this.itemService.get(id).subscribe(resp => {
+      this.itemService.get(id).subscribe((resp) => {
         this.itemDocument = resp;
         this.item = this.itemDocument._source;
       });

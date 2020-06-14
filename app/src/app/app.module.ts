@@ -22,7 +22,7 @@ import { GridComponent } from "./grid/grid.component";
     ItemPageComponent,
     HomeComponent,
     SearchPageComponent,
-    GridComponent
+    GridComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,9 +31,9 @@ import { GridComponent } from "./grid/grid.component";
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

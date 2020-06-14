@@ -28,15 +28,12 @@ const allowedCategories = [
   "Gift, Home & Office",
   "Toys",
   "Movies & TV",
-  "NOOK"
+  "NOOK",
 ];
 
 function getId(url) {
   const cleanUrl = new Buffer(url).toString("base64");
-  return crypto
-    .createHash("md5")
-    .update(cleanUrl)
-    .digest("hex");
+  return crypto.createHash("md5").update(cleanUrl).digest("hex");
 }
 
 function getHtmlOutPath(url) {
@@ -63,15 +60,15 @@ const productAttributes = [
   "Format",
   "File size",
   "UPC",
-  "Original Release"
-].map(attribute => {
+  "Original Release",
+].map((attribute) => {
   return { id: attribute.replace(/ /g, "_").toLowerCase(), title: attribute };
 });
 
 // crawler
 const crawler = new Crawler({
   maxConnections: 5,
-  rateLimit: 50
+  rateLimit: 50,
 });
 
 // counter
@@ -97,24 +94,12 @@ const itemCallback = (e, response, done) => {
       const url = request.uri.href;
 
       const id = getId(url);
-      const author = $("[itemprop=author]")
-        .text()
-        .trim();
-      const itemName = $("[itemprop=name]")
-        .text()
-        .trim();
-      const format = $("[itemprop=bookFormat]")
-        .text()
-        .trim();
-      const currentPrice = $(".current-price")
-        .text()
-        .trim();
-      const oldPrice = $(".old-price")
-        .text()
-        .trim();
-      const description = $(".overview-content")
-        .text()
-        .trim();
+      const author = $("[itemprop=author]").text().trim();
+      const itemName = $("[itemprop=name]").text().trim();
+      const format = $("[itemprop=bookFormat]").text().trim();
+      const currentPrice = $(".current-price").text().trim();
+      const oldPrice = $(".old-price").text().trim();
+      const description = $(".overview-content").text().trim();
       const averageRating = (() => {
         const averageRating = $(".hreview-aggregate .rating .average")
           .text()
@@ -122,20 +107,13 @@ const itemCallback = (e, response, done) => {
 
         return averageRating.length
           ? averageRating
-          : $(".gig-average-review")
-              .text()
-              .trim();
+          : $(".gig-average-review").text().trim();
       })();
-      const editorialReviews = $("#EditorialReviews p")
-        .text()
-        .trim();
+      const editorialReviews = $("#EditorialReviews p").text().trim();
       const image = $("#pdpMainImage").attr("src");
 
       const category = (() => {
-        const breadcrumbs = $(".breadCrumbNav")
-          .text()
-          .trim()
-          .split("\n");
+        const breadcrumbs = $(".breadCrumbNav").text().trim().split("\n");
 
         if (breadcrumbs.length >= 2) {
           const category = breadcrumbs[1];
@@ -160,7 +138,7 @@ const itemCallback = (e, response, done) => {
         editorialReviews,
         format,
         category,
-        image
+        image,
       };
 
       function getProductDetails(detail) {
@@ -203,15 +181,15 @@ const itemCallback = (e, response, done) => {
   }
 };
 
-getSites().then(async sites => {
+getSites().then(async (sites) => {
   for (let uri of sites) {
     if (!fs.existsSync(getHtmlOutPath(uri))) {
-      await new Promise(resolve => {
+      await new Promise((resolve) => {
         crawler.queue([
           {
             uri,
-            callback: itemCallback
-          }
+            callback: itemCallback,
+          },
         ]);
 
         setTimeout(resolve, SLEEP_TIME);

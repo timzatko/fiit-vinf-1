@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from "@angular/core";
 import { Item } from "./item";
 import { Document } from "../elastic-search/elastic-search.types";
@@ -12,7 +12,7 @@ import { Router } from "@angular/router";
 @Component({
   selector: "app-item",
   templateUrl: "./item.component.html",
-  styleUrls: ["./item.component.scss"]
+  styleUrls: ["./item.component.scss"],
 })
 export class ItemComponent implements OnInit, OnChanges {
   @Input() item: Document<Item>;

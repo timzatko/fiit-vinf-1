@@ -6,12 +6,12 @@ import { Observable } from "rxjs";
 import {
   Document,
   Hits,
-  SearchResponse
+  SearchResponse,
 } from "../elastic-search/elastic-search.types";
 import { map } from "rxjs/operators";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class ItemService {
   constructor(
@@ -38,14 +38,14 @@ export class ItemService {
               publication_date: {
                 gte: year,
                 lt: year + 1,
-                format: "yyyy"
-              }
-            }
+                format: "yyyy",
+              },
+            },
           },
           sort: [{ average_rating: "desc" }],
-          track_total_hits: false
+          track_total_hits: false,
         }
       )
-      .pipe(map(resp => resp.hits.hits));
+      .pipe(map((resp) => resp.hits.hits));
   }
 }

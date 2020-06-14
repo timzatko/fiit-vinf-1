@@ -17,7 +17,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     MatButtonModule,
     MatAutocompleteModule,
     MatSelectModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
   exports: [
     MatInputModule,
@@ -26,7 +26,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     MatButtonModule,
     MatAutocompleteModule,
     MatSelectModule,
-    MatPaginatorModule
-  ]
+    MatPaginatorModule,
+  ],
 })
 export class MaterialModule {}

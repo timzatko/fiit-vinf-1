@@ -15,7 +15,7 @@ let buffer = [];
 
 fs.createReadStream(path.resolve(__dirname, "out", "out.csv"))
   .pipe(parse({ delimiter: "," }))
-  .on("data", async csvRow => {
+  .on("data", async (csvRow) => {
     if (!csvHeader) {
       csvHeader = csvRow;
     } else {
@@ -59,13 +59,13 @@ async function send() {
   const body = [];
 
   buffer
-    .map(data => formatItem(data))
-    .filter(data => {
+    .map((data) => formatItem(data))
+    .filter((data) => {
       return (
         typeof data.price !== "undefined" && typeof data.name !== "undefined"
       );
     })
-    .forEach(data => {
+    .forEach((data) => {
       body.push({ index: { _index: "items", _id: data.id } });
       body.push(removeId(data));
     });
@@ -109,7 +109,7 @@ function formatItem(data) {
   renameProperty("averageRating", "average_rating");
   renameProperty("editorialReviews", "editorial_reviews");
 
-  Object.keys(data).forEach(key => {
+  Object.keys(data).forEach((key) => {
     const value = data[key];
 
     if (!value || !value.length || ["format"].includes(key)) {

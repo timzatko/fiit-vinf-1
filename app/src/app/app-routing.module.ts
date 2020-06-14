@@ -9,13 +9,13 @@ const routes: Routes = [
   { path: "item/:id", component: ItemPageComponent },
   {
     path: "home",
-    component: HomeComponent
+    component: HomeComponent,
   },
-  { path: "", redirectTo: "/home", pathMatch: "full" }
+  { path: "", redirectTo: "/home", pathMatch: "full" },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

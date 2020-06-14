@@ -12,7 +12,7 @@ const outPath = path.join(__dirname, "out");
 const getSites = () => {
   if (argv.dev) {
     return Promise.resolve([
-      "https://www.barnesandnoble.com/w/adobe-photoshop-cc-classroom-in-a-book-andrew-faulkner/1124173961?ean=9780135261781"
+      "https://www.barnesandnoble.com/w/adobe-photoshop-cc-classroom-in-a-book-andrew-faulkner/1124173961?ean=9780135261781",
     ]);
   }
 
@@ -31,7 +31,7 @@ const getSites = () => {
       fs
         .readFileSync(outFile, "utf8")
         .split("\n")
-        .filter(site => site && site.length)
+        .filter((site) => site && site.length)
     );
   } else {
     console.log("fetching sites from live site-map...");

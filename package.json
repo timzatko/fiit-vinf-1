@@ -1,6 +1,9 @@
 {
   "name": "fiit-vinf-1",
   "version": "1.0.0",
+  "author": "Timotej Zaťko",
+  "license": "ISC",
+  "homepage": "https://github.com/timzatko/fiit-vinf-1#readme",
   "devDependencies": {
     "husky": "^3.0.9",
     "prettier": "^1.18.2"
@@ -13,10 +16,8 @@
     "install": "sh install.sh",
     "prettier": "pre-commit run --all-files"
   },
-  "author": "Timotej Zaťko",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/timzatko/fiit-vinf-1/issues"
-  },
-  "homepage": "https://github.com/timzatko/fiit-vinf-1#readme"
+  "pre-commit": [
+    "prettier",
+    "git-add"
+  ]
 }

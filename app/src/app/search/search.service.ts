@@ -7,17 +7,17 @@ import {
   Document,
   Hits,
   SearchResponse,
-  SearchSuggestResponse
+  SearchSuggestResponse,
 } from "../elastic-search/elastic-search.types";
 import { Item } from "../item/item";
 import {
   ALL_CATEGORIES,
   ALL_PUBLICATION_YEARS,
-  SORT_BY_RELEVANCE
+  SORT_BY_RELEVANCE,
 } from "../search-page/search-page.component";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class SearchService {
   searchQuery$ = new BehaviorSubject<string>(undefined);
@@ -44,12 +44,12 @@ export class SearchService {
             should: [
               {
                 term: {
-                  "isbn-13": isbn13
-                }
-              }
-            ]
-          }
-        }
+                  "isbn-13": isbn13,
+                },
+              },
+            ],
+          },
+        },
       };
     }
 
@@ -64,23 +64,23 @@ export class SearchService {
             completion: {
               field: "name.completion",
               fuzzy: {
-                fuzziness: "AUTO"
-              }
-            }
+                fuzziness: "AUTO",
+              },
+            },
           },
           author: {
             prefix: text,
             completion: {
               field: "author.completion",
               fuzzy: {
-                fuzziness: "AUTO"
-              }
-            }
-          }
-        }
+                fuzziness: "AUTO",
+              },
+            },
+          },
+        },
       })
     ).pipe(
-      map(response => {
+      map((response) => {
         let output: AutoCompleteItem[] = [];
 
         const isbnHits = response.hits.hits;
@@ -89,24 +89,24 @@ export class SearchService {
 
         if (isbnHits.length) {
           output = output.concat(
-            isbnHits.map(document => ({ type: "isbn", document }))
+            isbnHits.map((document) => ({ type: "isbn", document }))
           );
         }
 
         if (nameSuggestions) {
           output = output.concat(
-            nameSuggestions[0].options.map(document => ({
+            nameSuggestions[0].options.map((document) => ({
               type: "name-suggestion",
-              document
+              document,
             }))
           );
         }
 
         if (authorSuggestions) {
           output = output.concat(
-            authorSuggestions[0].options.map(document => ({
+            authorSuggestions[0].options.map((document) => ({
               type: "author-suggestion",
-              document
+              document,
             }))
           );
         }
@@ -140,35 +140,35 @@ export class SearchService {
         {
           constant_score: {
             filter: {
-              match: { name: query }
+              match: { name: query },
             },
-            boost: 10
-          }
+            boost: 10,
+          },
         },
         {
           constant_score: {
             filter: {
-              match: { author: query }
+              match: { author: query },
             },
-            boost: 3
-          }
+            boost: 3,
+          },
         },
         {
           constant_score: {
             filter: {
-              match: { description: query }
+              match: { description: query },
             },
-            boost: 3
-          }
+            boost: 3,
+          },
         },
         {
           constant_score: {
             filter: {
-              match: { editorial_reviews: query }
+              match: { editorial_reviews: query },
             },
-            boost: 1
-          }
-        }
+            boost: 1,
+          },
+        },
       ];
 
       const isbn13 = Number(query);
@@ -176,24 +176,24 @@ export class SearchService {
         queries.push({
           constant_score: {
             filter: {
-              term: { "isbn-13": isbn13 }
+              term: { "isbn-13": isbn13 },
             },
-            boost: 100
-          }
+            boost: 100,
+          },
         });
       }
 
       should = {
         should: queries,
-        minimum_should_match: 1
+        minimum_should_match: 1,
       };
     }
 
     if (typeof filters.category !== "symbol") {
       filter.push({
         term: {
-          category: filters.category
-        }
+          category: filters.category,
+        },
       });
     }
 
@@ -201,9 +201,9 @@ export class SearchService {
       filter.push({
         range: {
           price: {
-            gte: filters.price.from
-          }
-        }
+            gte: filters.price.from,
+          },
+        },
       });
     }
 
@@ -211,9 +211,9 @@ export class SearchService {
       filter.push({
         range: {
           price: {
-            lte: filters.price.to
-          }
-        }
+            lte: filters.price.to,
+          },
+        },
       });
     }
 
@@ -221,9 +221,9 @@ export class SearchService {
       filter.push({
         range: {
           pages: {
-            gte: filters.pages.from
-          }
-        }
+            gte: filters.pages.from,
+          },
+        },
       });
     }
 
@@ -231,9 +231,9 @@ export class SearchService {
       filter.push({
         range: {
           pages: {
-            lte: filters.pages.to
-          }
-        }
+            lte: filters.pages.to,
+          },
+        },
       });
     }
 
@@ -246,22 +246,22 @@ export class SearchService {
                 publication_date: {
                   gte: filters.publicationDate,
                   lt: filters.publicationDate + 1,
-                  format: "yyyy"
-                }
-              }
+                  format: "yyyy",
+                },
+              },
             },
             {
               range: {
                 release_date: {
                   gte: filters.publicationDate,
                   lt: filters.publicationDate + 1,
-                  format: "yyyy"
-                }
-              }
-            }
+                  format: "yyyy",
+                },
+              },
+            },
           ],
-          minimum_should_match: 1
-        }
+          minimum_should_match: 1,
+        },
       });
     }
 
@@ -281,37 +281,37 @@ export class SearchService {
           query: {
             bool: {
               filter: filter,
-              ...should
-            }
+              ...should,
+            },
           },
           aggregations: {
             min_price: {
               min: {
-                field: "price"
-              }
+                field: "price",
+              },
             },
             avg_price: {
               avg: {
-                field: "price"
-              }
+                field: "price",
+              },
             },
             max_price: {
               max: {
-                field: "price"
-              }
+                field: "price",
+              },
             },
             prices: {
               histogram: {
                 field: "price",
-                interval: 10
-              }
+                interval: 10,
+              },
             },
             significant_publisher: {
               significant_terms: {
-                field: "publisher.keyword"
-              }
-            }
-          }
+                field: "publisher.keyword",
+              },
+            },
+          },
         }
       )
     );

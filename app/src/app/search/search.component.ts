@@ -3,7 +3,7 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild
+  ViewChild,
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { debounceTime, skip, switchMap, takeUntil } from "rxjs/operators";
@@ -15,7 +15,7 @@ import { MatAutocompleteTrigger } from "@angular/material/autocomplete";
 @Component({
   selector: "app-search",
   templateUrl: "./search.component.html",
-  styleUrls: ["./search.component.scss"]
+  styleUrls: ["./search.component.scss"],
 })
 export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild(MatAutocompleteTrigger, { static: true, read: ElementRef })
@@ -45,14 +45,14 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.suggestions = searchQuery$.pipe(
       debounceTime(300),
-      switchMap(query =>
+      switchMap((query) =>
         this.searchService
           .getAutocompleteSuggestions(query)
           .pipe(takeUntil(searchQuery$.pipe(skip(1))))
       )
     );
 
-    this.searchService.searchQuery$.asObservable().subscribe(value => {
+    this.searchService.searchQuery$.asObservable().subscribe((value) => {
       this.searchQueryControl.setValue(value);
     });
   }
@@ -90,7 +90,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     await this.router
       .navigate(["search"], {
-        queryParams: { q: query }
+        queryParams: { q: query },
       })
       .then(() => {
         this.searchInput.nativeElement.blur();
