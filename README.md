@@ -14,6 +14,10 @@ The simplified version of the assignment:
 
 I decided to crawl books from [https://www.barnesandnoble.com/](https://www.barnesandnoble.com/).
 
+## Preview
+
+![Preview](./assets/preview.gif)
+
 ## Prerequisites
 
 - [Docker](https://www.docker.com/)
