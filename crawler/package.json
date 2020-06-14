@@ -1,8 +1,9 @@
 {
   "name": "crawler",
   "version": "1.0.0",
-  "description": "",
   "main": "crawler.js",
+  "author": "Timotej Zaťko",
+  "license": "ISC",
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",
     "crawler": "^1.2.1",
@@ -10,7 +11,8 @@
     "csv-parse": "^4.6.3",
     "csv-write-stream": "^2.0.0",
     "fs-extra": "^8.1.0",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.5",
+    "mkdirp": "^1.0.4",
     "sitemapper": "^2.2.0"
   },
   "devDependencies": {},
@@ -18,9 +20,6 @@
     "start": "node ./crawler.js",
     "dev": "node ./crawler.js --dev",
     "clean": "node ./clean.js",
-    "export": "node ./to-elastic.js",
-    "export:dev": "node ./to-elastic.js --dev"
-  },
-  "author": "",
-  "license": "ISC"
+    "export": "node ./to-elastic.js"
+  }
 }

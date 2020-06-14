@@ -8,13 +8,12 @@ const client = new Client({ node: "http://localhost:9200" });
 const argv = require("minimist")(process.argv);
 
 const BULK_SIZE = 1000;
-const OUT_FILE_NAME = argv.dev ? "out-copy.csv" : "out.csv";
 
 let row = 0;
 let csvHeader;
 let buffer = [];
 
-fs.createReadStream(path.resolve(__dirname, OUT_FILE_NAME))
+fs.createReadStream(path.resolve(__dirname, "out", "out.csv"))
   .pipe(parse({ delimiter: "," }))
   .on("data", async csvRow => {
     if (!csvHeader) {

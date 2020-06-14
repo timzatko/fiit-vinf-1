@@ -4,8 +4,10 @@ const fs = require("fs");
 const path = require("path");
 
 const SiteMapper = require("sitemapper");
+const mkdirp = require("mkdirp");
 
 const argv = require("minimist")(process.argv);
+const outPath = path.join(__dirname, "out");
 
 const getSites = () => {
   if (argv.dev) {
@@ -17,16 +19,17 @@ const getSites = () => {
   // siteMapper
   const siteMapper = new SiteMapper();
 
-  const outPath = path.resolve(__dirname, "sites.txt");
+  mkdirp.sync(outPath);
+  const outFile = path.resolve(outPath, "sites.txt");
 
-  if (fs.existsSync(outPath)) {
+  if (fs.existsSync(outFile)) {
     console.log(
-      "loading from " + outPath + " --- remove this file to fetch sites again"
+      "loading from " + outFile + " --- remove this file to fetch sites again"
     );
 
     return Promise.resolve(
       fs
-        .readFileSync(outPath, "utf8")
+        .readFileSync(outFile, "utf8")
         .split("\n")
         .filter(site => site && site.length)
     );
@@ -36,7 +39,7 @@ const getSites = () => {
     return siteMapper
       .fetch("https://www.barnesandnoble.com/sitemap.xml")
       .then(({ sites }) => {
-        fs.writeFileSync(outPath, sites.join("\n"), { encoding: "utf8" });
+        fs.writeFileSync(outFile, sites.join("\n"), { encoding: "utf8" });
 
         return sites;
       });

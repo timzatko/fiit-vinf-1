@@ -12,8 +12,9 @@ const getSites = require("./get-sites");
 
 const argv = require("minimist")(process.argv);
 
-const outDir = path.resolve(__dirname, "out-html");
-fs.ensureDirSync(outDir);
+const outPath = path.resolve(__dirname, "out");
+const outDirHtml = path.resolve(__dirname, "out-html");
+fs.ensureDirSync(outDirHtml);
 
 const allowedCategories = [
   "Music",
@@ -39,12 +40,14 @@ function getId(url) {
 }
 
 function getHtmlOutPath(url) {
-  return path.resolve(outDir, getId(url) + ".html");
+  return path.resolve(outDirHtml, getId(url) + ".html");
 }
 
 const csvWriter = CsvWriteStream();
 
-csvWriter.pipe(fs.createWriteStream("out.csv", { flags: "a" }));
+csvWriter.pipe(
+  fs.createWriteStream(path.join(outPath, "out.csv"), { flags: "a" })
+);
 
 const productAttributes = [
   "Release Date",
@@ -67,8 +70,8 @@ const productAttributes = [
 
 // crawler
 const crawler = new Crawler({
-  // maxConnections: 5
-  // rateLimit: 50,
+  maxConnections: 5,
+  rateLimit: 50
 });
 
 // counter
@@ -211,7 +214,7 @@ getSites().then(async sites => {
           }
         ]);
 
-        setTimeout(resolve, SLEEP_TIME); // sleep je nastaveny na 1000 ms
+        setTimeout(resolve, SLEEP_TIME);
       });
     } else {
       increment(uri, "[SKIP] ");
