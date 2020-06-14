@@ -9,6 +9,10 @@
     "type": "git",
     "url": "git+https://github.com/timzatko/fiit-vinf-1.git"
   },
+  "scripts": {
+    "install": "sh install.sh",
+    "prettier": "pre-commit run --all-files"
+  },
   "author": "Timotej Zaťko",
   "license": "ISC",
   "bugs": {
