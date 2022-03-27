@@ -11,7 +11,7 @@
     "csv-parse": "^4.6.3",
     "csv-write-stream": "^2.0.0",
     "fs-extra": "^8.1.0",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "mkdirp": "^1.0.4",
     "sitemapper": "^2.2.0"
   },
